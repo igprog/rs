@@ -1,0 +1,51 @@
+[
+ {
+    "$id": "0",
+    "Id": "37589662-fcfb-46b6-9bea-561f7429586f",
+    "Cod": "",
+    "OptionCod": "",
+    "Title": "All Category"
+  },
+  {
+    "$id": "1",
+    "Id": "37589662-fcfb-46b6-9bea-561f7429586e",
+    "Cod": "category",
+    "OptionCod": "tours",
+    "Title": "Tours"
+  },
+  {
+    "$id": "2",
+    "Id": "db7c3bd1-fc3e-4336-8fe9-64f7a7a059ba",
+    "Cod": "category",
+    "OptionCod": "transport",
+    "Title": "Transport"
+  },
+  {
+    "$id": "3",
+    "Id": "90b4ee50-0603-4c49-b863-8f58d18670b7",
+    "Cod": "category",
+    "OptionCod": "accommodation",
+    "Title": "Accommodation"
+  },
+  {
+    "$id": "4",
+    "Id": "7e1a03b7-678b-41ec-a55a-abd8eda0a3b5",
+    "Cod": "category",
+    "OptionCod": "goingout",
+    "Title": "Going Out"
+  },
+  {
+    "$id": "5",
+    "Id": "b80da8d0-5fde-4f41-b24d-d22c4d4ce3c3",
+    "Cod": "category",
+    "OptionCod": "islands",
+    "Title": "Islands"
+  },
+  {
+    "$id": "6",
+    "Id": "2b83e161-a2ec-4ef2-9ee1-dd84c5b154dd",
+    "Cod": "category",
+    "OptionCod": "eating",
+    "Title": "Eating"
+  }
+]

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationSettings>
+  <ActiveLanguage>English</ActiveLanguage>
+  <Info>
+    <Name>IG PROG</Name>
+    <Address>Ludvewtov breg 5</Address>
+    <PostalCode>51000</PostalCode>
+    <City>Rijeka</City>
+    <Country>Hrvatska</Country>
+    <Tel>+385 98 330 966</Tel>
+    <GSM></GSM>
+    <Site>www.rivierasplit.com</Site>
+    <SiteURL>http://rivierasplit.com</SiteURL>
+    <Email>igprog@yahoo.com</Email>
+    <EmailPassword>Jardula26</EmailPassword>
+    <ServerPort>587</ServerPort>
+    <ServerHost>smtp.mail.yahoo.com</ServerHost>
+    <AdditionalMail1></AdditionalMail1>
+    <AdditionalMail2></AdditionalMail2>
+    <AdditionalMail3></AdditionalMail3>
+    <Iban></Iban>
+    <SwiftCode></SwiftCode>
+  </Info>
+  <SiteContent>
+    <SiteTitle>
+     
+    </SiteTitle>
+    <SiteShortDescription>
+      
+    </SiteShortDescription>
+    <SiteLongDescription>
+      Lorem ipsum dolor sit amet, his te magna vivendum, pri et velit inciderint. Ne eam vidit omnesque, at nostro albucius duo. Nec in esse probo nominavi. Bonorum voluptatum at his, sensibus forensibus qui ne.
+      An eum aperiam posidonium omittantur. Tempor audire laoreet vel ne, an discere civibus cotidieque eam. Eos aliquip accommodare ne, et tota impedit conceptam eos, mea eu nibh habemus. Ex prompta debitis sed, nam idque dicta dicam ut, vis id omnes senserit. Nam ea autem aliquam, cotidieque appellantur ea sea, delenit epicuri an cum.
+      Clita doctus in his, ut etiam impetus vim. At nec malis omittam, sea ad semper regione. Error graece pertinax an vel, nostrum percipitur his cu, esse splendide nec ex. Munere ridens adipisci pri ei. An sumo nostrum indoctum eum, cetero senserit mel eu. Ut purto etiam intellegat sit, tantas aeterno veritus vim no. At prompta corrumpit tincidunt his.
+      At efficiantur liberavisse ullamcorper his, error everti ea mea. Oporteat prodesset per id, est vide detracto ea. Sea ex fugit blandit pertinacia, te fugit consequat conclusionemque eos. Tota reque vitae et mea.
+      Sadipscing appellantur sea te, has hinc aliquid id. No sit quis clita volumus, dicam dolore albucius id pri, mazim ocurreret interesset id has. Ad eum iriure voluptatibus, ridens expetenda has ex, reque inermis hendrerit eum te. Mea doctus animal instructior et, in pro dolores sapientem adolescens. Malis deseruisse argumentum ius ea. Eos ne vitae similique.
+    </SiteLongDescription>
+  </SiteContent>
+  <Settings>
+    <HrkEurRate>7.56</HrkEurRate>
+  </Settings>
+</ApplicationSettings>

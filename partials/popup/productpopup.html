@@ -1,0 +1,46 @@
+﻿<div>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()">
+            &times;</button>
+        <h3 class="modal-title">{{g.Title}}</h3>
+        <div>
+            <span ng-if="g.Address">{{g.Address}},</span> <span ng-if="g.PostalCode">{{g.PostalCode}}</span> <span ng-if="g.City">{{g.City}}</span>
+        </div>
+        <br />
+        <div class="row text-center">
+            <div class="col-sm-4" style="padding:5px">
+                <a ng-if="g.Email" ng-href="mailto:{{g.Email}}" target="_blank" class="btn btn-success">
+                    <span class="fa fa-envelope-o"></span> Send Mail</a>
+            </div>
+            <div class="col-sm-4" style="padding:5px">
+                <a ng-if="g.Phone" ng-href="tel:{{g.Phone}}" target="_blank" class="btn btn-danger">
+                    <span class="fa fa-phone"></span> Call</a>
+            </div>
+            <div class="col-sm-4" style="padding:5px">
+                <a ng-if="g.Web" ng-href="{{g.Web}}" target="_blank" class="btn btn-info">
+                    <span class="fa fa-globe"></span> Web</a>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" style="height: 60vh; overflow: auto">
+        <div class="well">
+            {{g.City}}
+            <br />
+            {{g.ShortDescription}}
+            <br />
+            {{g.Price}}
+            <br />
+            {{g.LongDescription}}
+        </div>
+       <!-- id: {{productId}}-->
+        <h5>Gallery</h5>
+        <div ng-if="gallery" class="well" ng-repeat="x in gallery">
+            <img ng-src="upload/{{g.ProductId}}/gallery/{{x.Image}}" style="width: 100%" alt="Image"
+                title="" />
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="close()">
+            Cancel</button>
+    </div>
+</div>

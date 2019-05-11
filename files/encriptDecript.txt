@@ -1,0 +1,157 @@
+Example:
+Encript: 1 ==> mELirpUhRYksFj7k8/XBcQ==
+
+DB
+UserName  nvarchar(30)    notNull
+Password  nvarchart(200)  notNull
+
+HTML
+
+<form id="form1" runat="server">
+<table border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td>
+            Username:
+        </td>
+        <td>
+            <asp:TextBox ID="txtUsername" runat="server" Text="" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Password:
+        </td>
+        <td>
+            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td>
+            <asp:Button ID="btnSubmit" OnClick="Submit" Text="Submit" runat="server" />
+        </td>
+    </tr>
+</table>
+<hr />
+<asp:GridView ID="gvUsers" runat="server" AutoGenerateColumns="false" HeaderStyle-BackColor="#3AC0F2"
+    HeaderStyle-ForeColor="White" RowStyle-BackColor="#A1DCF2" OnRowDataBound = "OnRowDataBound">
+    <Columns>
+        <asp:BoundField DataField="Username" HeaderText="Username" />
+        <asp:BoundField DataField="Password" HeaderText="Encrypted Password" />
+        <asp:BoundField DataField="Password" HeaderText="Desrypted Password" />
+    </Columns>
+</asp:GridView>
+</form>
+
+
+
+
+C#
+
+using System.IO;
+using System.Text;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Security.Cryptography;
+
+private string Encrypt(string clearText)
+{
+    string EncryptionKey = "MAKV2SPBNI99212";
+    byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
+    using (Aes encryptor = Aes.Create())
+    {
+        Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+        encryptor.Key = pdb.GetBytes(32);
+        encryptor.IV = pdb.GetBytes(16);
+        using (MemoryStream ms = new MemoryStream())
+        {
+            using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+            {
+                cs.Write(clearBytes, 0, clearBytes.Length);
+                cs.Close();
+            }
+            clearText = Convert.ToBase64String(ms.ToArray());
+        }
+    }
+    return clearText;
+}
+ 
+private string Decrypt(string cipherText)
+{
+    string EncryptionKey = "MAKV2SPBNI99212";
+    byte[] cipherBytes = Convert.FromBase64String(cipherText);
+    using (Aes encryptor = Aes.Create())
+    {
+        Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+        encryptor.Key = pdb.GetBytes(32);
+        encryptor.IV = pdb.GetBytes(16);
+        using (MemoryStream ms = new MemoryStream())
+        {
+            using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
+            {
+                cs.Write(cipherBytes, 0, cipherBytes.Length);
+                cs.Close();
+            }
+            cipherText = Encoding.Unicode.GetString(ms.ToArray());
+        }
+    }
+    return cipherText;
+}
+
+
+protected void Submit(object sender, EventArgs e)
+{
+    string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+    using (SqlConnection con = new SqlConnection(constr))
+    {
+        using (SqlCommand cmd = new SqlCommand("INSERT INTO Users VALUES(@Username, @Password)"))
+        {
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("@Username", txtUsername.Text.Trim());
+            cmd.Parameters.AddWithValue("@Password", Encrypt(txtPassword.Text.Trim()));
+            cmd.Connection = con;
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+    }
+    Response.Redirect(Request.Url.AbsoluteUri);
+}
+
+
+
+protected void Page_Load(object sender, EventArgs e)
+{
+    if (!this.IsPostBack)
+    {
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM Users"))
+            {
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    DataTable dt = new DataTable();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    sda.Fill(dt);
+                    gvUsers.DataSource = dt;
+                    gvUsers.DataBind();
+                }
+            }
+        }
+    }
+}
+
+
+
+protected void OnRowDataBound(object sender, GridViewRowEventArgs e)
+{
+    if (e.Row.RowType == DataControlRowType.DataRow)
+    {
+        e.Row.Cells[2].Text = Decrypt(e.Row.Cells[2].Text);
+    }
+}
