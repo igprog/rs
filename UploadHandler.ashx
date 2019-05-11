@@ -8,19 +8,19 @@ public class UploadHandler : IHttpHandler {
 
     public void ProcessRequest (HttpContext context) {
         context.Response.ContentType = "text/plain";
-        string userId = context.Request.Form["userid"];
+        string imgId = context.Request.Form["imgId"];
         if (context.Request.Files.Count > 0) {
             HttpFileCollection files = context.Request.Files;
             for (int i = 0; i < files.Count; i++) {
                 HttpPostedFile file = files[i];
-                string fname = context.Server.MapPath(string.Format("~/upload/{0}/gallery/{1}", userId, file.FileName));
+                string fname = context.Server.MapPath(string.Format("~/upload/{0}/gallery/{1}", imgId, file.FileName));
                 if (!string.IsNullOrEmpty(file.FileName)) {
-                    string folderPath = context.Server.MapPath(string.Format("~/upload/{0}/gallery", userId));
+                    string folderPath = context.Server.MapPath(string.Format("~/upload/{0}/gallery", imgId));
                     if (!Directory.Exists(folderPath)) {
                         Directory.CreateDirectory(folderPath);
                     }
                     file.SaveAs(fname);
-                    context.Response.Write("OK");
+                    context.Response.Write(imgId);
                 } else {
                     context.Response.Write("please choose a file to upload");
                 }

@@ -22,27 +22,7 @@ using System.IO;
 public class Products : System.Web.Services.WebService {
 
     public Products () {
-        //ProductId = null;
-        //ProductGroup = null;
-        //ProductOwner = null;
-        //Title = null;
-        //ShortDescription = null;
-        //LongDescription = null;
-        //Address = null;
-        //PostalCode = null;
-        //City = null;
-        //Phone = null;
-        //Email = null;
-        //Web = null;
-        //Price = null;
-        //Latitude = 0;
-        //Longitude = 0;
-        //Image = null;
-        //DateModified = DateTime.Today;
-        //IsActive = 1;
-        //DisplayType = 0;
-        //Uncomment the following line if using designed components 
-        //InitializeComponent(); 
+       
     }
 
    // string GalleryImage = null;
@@ -57,62 +37,6 @@ public class Products : System.Web.Services.WebService {
         get { return _InfoMessage; }
         set { _InfoMessage = value; }
     }
-
-    /*
-    //[DataMember]
-    //public Guid? ProductId { get; set; }
-    public string ProductId { get; set; }
-    [DataMember]
-    public Guid? ProductGroup { get; set; }
-    [DataMember]
-    public Guid? ProductOwner { get; set; }
-    [DataMember]
-    public String Title { get; set; }
-    [DataMember]
-    public String ShortDescription { get; set; }
-    [DataMember]
-    public String LongDescription { get; set; }
-
-    [DataMember]
-    public String Address { get; set; }
-
-    [DataMember]
-    public String PostalCode { get; set; }
-
-    [DataMember]
-    public String City { get; set; }
-
-    [DataMember]
-    public String Phone { get; set; }
-
-    [DataMember]
-    public String Email { get; set; }
-
-    [DataMember]
-    public String Web { get; set; }
-
-    [DataMember]
-    public String Price { get; set; }
-
-    [DataMember]
-    public Decimal Latitude { get; set; }
-
-    [DataMember]
-    public Decimal Longitude { get; set; }
-
-    [DataMember]
-    public String Image { get; set; }
-
-    [DataMember]
-    public DateTime? DateModified { get; set; }
-
-    [DataMember]
-    public int IsActive { get; set; }
-
-    [DataMember]
-    public int DisplayType { get; set; }
-    */
-
 
     public class NewProduct {
         public Guid? productId;
@@ -134,7 +58,8 @@ public class Products : System.Web.Services.WebService {
         public DateTime dateModified;
         public int isActive;
         public int displayType;
-        public List<Gallery> gallery;
+        // public List<Gallery> gallery;
+        public string[] gellery;
     }
     
 
@@ -178,27 +103,6 @@ public class Products : System.Web.Services.WebService {
         List<NewProduct> xx = new List<NewProduct>();
         while (reader.Read()) {
             NewProduct x = ReadProductData(reader);
-            //NewProduct xx = new NewProduct() {
-            //    ProductId = reader.GetGuid(0),
-            //    ProductGroup = reader.GetGuid(1),
-            //    ProductOwner = reader.GetGuid(2),
-            //    Title = reader.GetValue(3) == DBNull.Value ? "" : reader.GetString(3),
-            //    ShortDescription = reader.GetValue(4) == DBNull.Value ? "" : reader.GetString(4),
-            //    LongDescription = reader.GetValue(5) == DBNull.Value ? "" : reader.GetString(5),
-            //    Address = reader.GetValue(6) == DBNull.Value ? "" : reader.GetString(6),
-            //    PostalCode = reader.GetValue(7) == DBNull.Value ? "" : reader.GetString(7),
-            //    City = reader.GetValue(8) == DBNull.Value ? "" : reader.GetString(8),
-            //    Phone = reader.GetValue(9) == DBNull.Value ? "" : reader.GetString(9),
-            //    Email = reader.GetValue(10) == DBNull.Value ? "" : reader.GetString(10),
-            //    Web = reader.GetValue(11) == DBNull.Value ? "" : reader.GetString(11),
-            //    Price = reader.GetValue(12) == DBNull.Value ? "" : reader.GetString(12),
-            //    Latitude = reader.GetValue(13) == DBNull.Value ? 0 : reader.GetDecimal(13),
-            //    Longitude = reader.GetValue(14) == DBNull.Value ? 0 : reader.GetDecimal(14),
-            //    Image = reader.GetValue(15) == DBNull.Value ? "" : reader.GetString(15),
-            //    DateModified = reader.GetValue(16) == DBNull.Value ? DateTime.Today : reader.GetDateTime(16),
-            //    IsActive = reader.GetValue(17) == DBNull.Value ? 1 : reader.GetInt32(17),
-            //    DisplayType = reader.GetValue(18) == DBNull.Value ? 0 : reader.GetInt32(18)
-            //};
             xx.Add(x);
         }
         connection.Close();
@@ -244,7 +148,7 @@ public class Products : System.Web.Services.WebService {
            // }
         }
         reader.Close();
-        x.gallery = GetGallery(connection, productId);
+        //x.gallery = GetGallery(connection, productId);
         connection.Close();
 
         string json = JsonConvert.SerializeObject(x, Formatting.Indented);
@@ -314,23 +218,23 @@ public class Products : System.Web.Services.WebService {
           return json;
     }
 
-    List<Gallery> GetGallery(SqlConnection connection, string productId) {
+    //List<Gallery> GetGallery(SqlConnection connection, string productId) {
 
-        SqlCommand command = new SqlCommand("SELECT GalleryOwner, Image FROM Gallery Where GalleryOwner = @ProductId", connection);
-        command.Parameters.Add(new SqlParameter("ProductId", productId));
-        SqlDataReader reader = command.ExecuteReader();
+    //    SqlCommand command = new SqlCommand("SELECT GalleryOwner, Image FROM Gallery Where GalleryOwner = @ProductId", connection);
+    //    command.Parameters.Add(new SqlParameter("ProductId", productId));
+    //    SqlDataReader reader = command.ExecuteReader();
 
-        List<Gallery> gallery = new List<Gallery>();
-        while (reader.Read()) {
-            Gallery xx = new Gallery() {
-                GalleryOwner = reader.GetGuid(0),
-                Image = reader.GetString(1)
-            };
-            gallery.Add(xx);
-        }
-        return gallery;
+    //    List<Gallery> gallery = new List<Gallery>();
+    //    while (reader.Read()) {
+    //        Gallery xx = new Gallery() {
+    //            GalleryOwner = reader.GetGuid(0),
+    //            Image = reader.GetString(1)
+    //        };
+    //        gallery.Add(xx);
+    //    }
+    //    return gallery;
 
-    }
+    //}
 
 
     [WebMethod]
@@ -575,7 +479,6 @@ public class Products : System.Web.Services.WebService {
 
     [WebMethod]
     public void DeleteImage(string productId) {
-
         string imagePath = "~/upload/" + productId + "/mainimage/" + GetMainImage(productId);
         if (File.Exists(Server.MapPath(imagePath))) {
             File.Delete(Server.MapPath(imagePath));
@@ -596,29 +499,49 @@ public class Products : System.Web.Services.WebService {
         connection.Close();
     }
 
+    [WebMethod]
+    public string LoadProductGallery(Guid? productId) {
+        try {
+            string[] x = GetGallery(productId);
+            return JsonConvert.SerializeObject(x, Formatting.Indented);
+        } catch(Exception e) {
+            return null;
+        }
+    }
+
     NewProduct ReadProductData(SqlDataReader reader) {
-        NewProduct x = new NewProduct() {
-            productId = reader.GetGuid(0),
-            productGroup = reader.GetGuid(1),
-            productOwner = reader.GetGuid(2),
-            title = reader.GetValue(3) == DBNull.Value ? "" : reader.GetString(3),
-            shortDescription = reader.GetValue(4) == DBNull.Value ? "" : reader.GetString(4),
-            longDescription = reader.GetValue(5) == DBNull.Value ? "" : reader.GetString(5),
-            address = reader.GetValue(6) == DBNull.Value ? "" : reader.GetString(6),
-            postalCode = reader.GetValue(7) == DBNull.Value ? "" : reader.GetString(7),
-            city = reader.GetValue(8) == DBNull.Value ? "" : reader.GetString(8),
-            phone = reader.GetValue(9) == DBNull.Value ? "" : reader.GetString(9),
-            email = reader.GetValue(10) == DBNull.Value ? "" : reader.GetString(10),
-            web = reader.GetValue(11) == DBNull.Value ? "" : reader.GetString(11),
-            price = reader.GetValue(12) == DBNull.Value ? "" : reader.GetString(12),
-            latitude = reader.GetValue(13) == DBNull.Value ? 0 : reader.GetDecimal(13),
-            longitude = reader.GetValue(14) == DBNull.Value ? 0 : reader.GetDecimal(14),
-            image = reader.GetValue(15) == DBNull.Value ? "" : reader.GetString(15),
-            //dateModified = reader.GetValue(16) == DBNull.Value ? DateTime.Today : reader.GetDateTime(16),
-            //isActive = reader.GetValue(17) == DBNull.Value ? 1 : reader.GetInt32(17),
-            displayType = reader.GetValue(18) == DBNull.Value ? 0 : reader.GetInt32(18)
-        };
+        NewProduct x = new NewProduct();
+        x.productId = reader.GetGuid(0);
+        x.productGroup = reader.GetGuid(1);
+        x.productOwner = reader.GetGuid(2);
+        x.title = reader.GetValue(3) == DBNull.Value ? "" : reader.GetString(3);
+        x.shortDescription = reader.GetValue(4) == DBNull.Value ? "" : reader.GetString(4);
+        x.longDescription = reader.GetValue(5) == DBNull.Value ? "" : reader.GetString(5);
+        x.address = reader.GetValue(6) == DBNull.Value ? "" : reader.GetString(6);
+        x.postalCode = reader.GetValue(7) == DBNull.Value ? "" : reader.GetString(7);
+        x.city = reader.GetValue(8) == DBNull.Value ? "" : reader.GetString(8);
+        x.phone = reader.GetValue(9) == DBNull.Value ? "" : reader.GetString(9);
+        x.email = reader.GetValue(10) == DBNull.Value ? "" : reader.GetString(10);
+        x.web = reader.GetValue(11) == DBNull.Value ? "" : reader.GetString(11);
+        x.price = reader.GetValue(12) == DBNull.Value ? "" : reader.GetString(12);
+        x.latitude = reader.GetValue(13) == DBNull.Value ? 0 : reader.GetDecimal(13);
+        x.longitude = reader.GetValue(14) == DBNull.Value ? 0 : reader.GetDecimal(14);
+        x.image = reader.GetValue(15) == DBNull.Value ? "" : reader.GetString(15);
+        //x.dateModified = reader.GetValue(16) == DBNull.Value ? DateTime.Today : reader.GetDateTime(16);
+        //x.isActive = reader.GetValue(17) == DBNull.Value ? 1 : reader.GetInt32(17);
+        x.displayType = reader.GetValue(18) == DBNull.Value ? 0 : reader.GetInt32(18);
+        x.gellery = GetGallery(x.productId);
         return x;
+    }
+
+    string[] GetGallery(Guid? productId) {
+        string[] xx = null;
+        string path = Server.MapPath(string.Format("~/upload/{0}/gallery", productId));
+        if (Directory.Exists(path)) {
+            string[] ss = Directory.GetFiles(path);
+            xx = ss.Select(a => Path.GetFileName(a)).ToArray();
+        }
+        return xx;
     }
 
 

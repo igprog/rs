@@ -80,7 +80,6 @@
        });
     }
 
-
     var update = function (x) {
         $http({
             url: "../Products.asmx/Update",
@@ -95,8 +94,7 @@
        });
     }
 
-    var upload = function () {
-        debugger;
+    var upload = function (x) {
         var content = new FormData(document.getElementById("formUpload"));
         $http({
             url: '../UploadHandler.ashx',
@@ -104,13 +102,29 @@
             headers: { 'Content-Type': undefined },
             data: content,
         }).then(function (response) {
-            $scope.img = '../upload/' + $scope.u.userId + '/gallery/' + 'todo.png';
-            if (response.data.d !== 'OK') {
-                alert(response.data.d);
-            }
+            var productId = response.data; // '../upload/' + $scope.u.userId + '/gallery/' + 'todo.png';
+            x.gallery = loadProductGallery(productId);
+
+            //if (response.data !== 'OK') {
+            //    alert(response.data);
+            //}
         },
        function (response) {
            alert(response.data.d);
+       });
+    }
+
+    var loadProductGallery = function (x) {
+        $http({
+            url: "../Products.asmx/LoadProductGallery",
+            method: 'POST',
+            data: { productId: x },
+        })
+        .then(function (response) {
+            return response.data.d;
+        },
+       function (response) {
+           return null; //alert(response.data.d);
        });
     }
 
