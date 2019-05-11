@@ -3,8 +3,9 @@
     <div class="booking-item booking-item-small well">
         <div class="row">
             <div class="col-xs-6">
-                <img ng-src="upload/{{x.productId}}/mainimage/{{x.image}}" style="width: 100%; height: 100%"
-                    alt="Image" title="" />
+                <img ng-if="x.gallery[0]" src="./upload/{{x.productId}}/gallery/{{x.gallery[0]}}" check-image alt="{{x.title}}" class="img-thumbnail" title="{{x.title}}" />
+                <!--<img ng-if="x.gallery[0]" ng-src="../upload/{{x.productId}}/gallery/{{x.gallery[0]}}" check-image alt="{{x.title}}" class="img-thumbnail" title="{{x.title}}" />-->
+                <img ng-if="!x.gallery[0]" src="./img/default.png" alt="{{x.title}}" class="img-thumbnail" title="{{x.title}}" />
             </div>
             <div class="col-xs-6">
                 <h4 ng-if="x.city">{{x.city}}</h4>
@@ -22,7 +23,7 @@
                 </div>
             </div>
             <div class="col-xs-12">
-            <span ng-if="x.shortDescription">{{}}</span>
+            <span ng-if="x.shortDescription">{{x.shortDescription}}</span>
               <!--  <tourtraveln class="booking-item-price-from">{{x.shortDescription}}</tourtraveln>
                 <tourtraveln class="booking-item-price">€{{x.price}}</tourtraveln>-->
             </div>

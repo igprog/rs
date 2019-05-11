@@ -26,17 +26,17 @@ public class Products : System.Web.Services.WebService {
     }
 
    // string GalleryImage = null;
-    public class Gallery {
-        public Guid GalleryOwner { set; get; }
-        public string Image { set; get; }
-    }
+    //public class Gallery {
+    //    public Guid GalleryOwner { set; get; }
+    //    public string Image { set; get; }
+    //}
 
 
-    string _InfoMessage = "";
-    public string InfoMessage {
-        get { return _InfoMessage; }
-        set { _InfoMessage = value; }
-    }
+    //string _InfoMessage = "";
+    //public string InfoMessage {
+    //    get { return _InfoMessage; }
+    //    set { _InfoMessage = value; }
+    //}
 
     public class NewProduct {
         public Guid? productId;
@@ -59,9 +59,38 @@ public class Products : System.Web.Services.WebService {
         public int isActive;
         public int displayType;
         // public List<Gallery> gallery;
-        public string[] gellery;
+        public string[] gallery;
     }
-    
+
+
+     [WebMethod]
+    public string Init() {
+        try {
+            NewProduct x = new NewProduct();
+            x.productId = null;
+            x.productGroup = null;
+            x.productOwner = null;
+            x.title = "";
+            x.shortDescription = "";
+            x.longDescription = "";
+            x.address = "";
+            x.postalCode = "";
+            x.city = "";
+            x.phone = "";
+            x.email = "";
+            x.web = "";
+            x.price = "";
+            x.latitude = 0;
+            x.longitude = 0;
+            x.image = "";
+            x.dateModified = new DateTime();
+            x.isActive = 1;
+            x.displayType = 0;
+            return JsonConvert.SerializeObject(x, Formatting.Indented);
+        } catch (Exception e) {
+            return e.Message;
+        }
+    }
 
     //public String GalleryImage { get; set; }
 
@@ -106,18 +135,16 @@ public class Products : System.Web.Services.WebService {
             xx.Add(x);
         }
         connection.Close();
-
-        string json = JsonConvert.SerializeObject(xx, Formatting.Indented);
-        return json;
+        return JsonConvert.SerializeObject(xx, Formatting.Indented);
     }
 
 
     [WebMethod]
-    public string GetAllProductsByUserId(Guid UserId) {
+    public string GetAllProductsByUserId(Guid userId) {
         SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
         connection.Open();
         SqlCommand command = new SqlCommand("SELECT ProductId, ProductGroup, ProductOwner, Title, ShortDescription, LongDescription, Address, PostalCode, City, Phone, Email, Web, Price, Latitude, Longitude, Image, DateModified, IsActive, DisplayType FROM Products WHERE @ProductOwner = ProductOwner", connection);
-        command.Parameters.Add(new SqlParameter("ProductOwner", UserId));
+        command.Parameters.Add(new SqlParameter("ProductOwner", userId));
         SqlDataReader reader = command.ExecuteReader();
         List<NewProduct> xx = new List<NewProduct>();
         while (reader.Read()) {
@@ -196,27 +223,27 @@ public class Products : System.Web.Services.WebService {
         return json;
     }
 
-    [WebMethod]
-    public string GetGalleryByProductId(String productId) {
-          SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-          connection.Open();
-          SqlCommand command = new SqlCommand("SELECT GalleryOwner, Image FROM Gallery Where GalleryOwner = @ProductId", connection);
-          command.Parameters.Add(new SqlParameter("ProductId", productId));
-          SqlDataReader reader = command.ExecuteReader();
+    //[WebMethod]
+    //public string GetGalleryByProductId(String productId) {
+    //      SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+    //      connection.Open();
+    //      SqlCommand command = new SqlCommand("SELECT GalleryOwner, Image FROM Gallery Where GalleryOwner = @ProductId", connection);
+    //      command.Parameters.Add(new SqlParameter("ProductId", productId));
+    //      SqlDataReader reader = command.ExecuteReader();
 
-          List<Gallery> gallery = new List<Gallery>();
-          while (reader.Read()) {
-              Gallery xx = new Gallery() {
-                  GalleryOwner = reader.GetGuid(0),
-                  Image = reader.GetString(1)
-              };
-              gallery.Add(xx);
-          }
-       
-          connection.Close();
-          string json = JsonConvert.SerializeObject(gallery, Formatting.Indented);
-          return json;
-    }
+    //      List<Gallery> gallery = new List<Gallery>();
+    //      while (reader.Read()) {
+    //          Gallery xx = new Gallery() {
+    //              GalleryOwner = reader.GetGuid(0),
+    //              Image = reader.GetString(1)
+    //          };
+    //          gallery.Add(xx);
+    //      }
+
+    //      connection.Close();
+    //      string json = JsonConvert.SerializeObject(gallery, Formatting.Indented);
+    //      return json;
+    //}
 
     //List<Gallery> GetGallery(SqlConnection connection, string productId) {
 
@@ -238,13 +265,23 @@ public class Products : System.Web.Services.WebService {
 
 
     [WebMethod]
-    public string Save(NewProduct product) {
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        connection.Open();
+    public string SaveProduct(NewProduct product, Users.NewUser user) {
+        if(product.productId == null) {
+            return Save(product, user);
+        } else {
+            return Update(product);
+        }
+    }
+
+    [WebMethod]
+    public string Save(NewProduct product, Users.NewUser user) {
         try {
+            product.productId = Guid.NewGuid();
+            product.productOwner = user.userId;
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            connection.Open();
             string sql = @"INSERT INTO Products VALUES
                         (@ProductId, @ProductGroup, @ProductOwner, @Title, @ShortDescription, @LongDescription, @Address, @PostalCode, @City, @Phone, @Email, @Web, @Price, @Latitude, @Longitude, @Image, @DateModified, @IsActive, @DisplayType)";
-
             SqlCommand command = new SqlCommand(sql, connection);
             command.Parameters.Add(new SqlParameter("ProductId", product.productId));
             command.Parameters.Add(new SqlParameter("ProductGroup", product.productGroup));
@@ -267,7 +304,7 @@ public class Products : System.Web.Services.WebService {
             command.Parameters.Add(new SqlParameter("DisplayType", product.displayType));
             command.ExecuteNonQuery();
             connection.Close();
-            return string.Format(@"Product saved successfully!");
+            return JsonConvert.SerializeObject(product, Formatting.Indented);
         }
         catch (Exception e) {
             return string.Format(@"Error! Product not saved. ({0})", e.Message);
@@ -322,41 +359,26 @@ public class Products : System.Web.Services.WebService {
             command.Parameters.Add(new SqlParameter("DisplayType", product.displayType));
             command.ExecuteNonQuery();
             connection.Close();
-            return string.Format(@"Product updated successfully!");
+            return JsonConvert.SerializeObject(product, Formatting.Indented);
         } catch (Exception e) {
             return string.Format(@"Error! Product not updated. ({0})", e.Message);
         }
     }
 
     [WebMethod]
-    public void Delete(NewProduct product, string productId) {
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        connection.Open();
+    public string Delete(Guid? productId) {
         try {
-            string sql = @"
-                            DELETE * FROM Products WHERE
-                            WHERE [ProductId] = @ProductId";
-
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            connection.Open();
+            string sql = string.Format(@"DELETE FROM Products WHERE [ProductId] = '{0}'", productId.ToString());
             SqlCommand command = new SqlCommand(sql, connection);
-            command.Parameters.Add(new SqlParameter("ProductId", new Guid(productId)));
-            
+            //command.Parameters.Add(new SqlParameter("ProductId", productId));
             command.ExecuteNonQuery();
             connection.Close();
-
-            _InfoMessage = string.Format(@"
-                        <div class=""alert alert-success alert-dismissable"">
-                            <a href=""#"" class=""close"" data-dismiss=""alert"" aria-label=""close"">×</a>
-                            <strong>Product deleted Successfully!</strong>
-                        </div>");
-
-        }
-        catch (Exception ex) {
-            _InfoMessage = string.Format(@"
-                     <div class=""alert alert-danger alert-dismissable"">
-                            <a href=""#"" class=""close"" data-dismiss=""alert"" aria-label=""close"">×</a>
-                            <strong>Error! Product not deleted.</strong>
-                        </div>");
-            return;
+            DeleteGallery(productId);
+            return string.Format(@"Product deleted Successfully!");
+        } catch (Exception e) {
+            return string.Format(@"Error! Product not deleted. ({0})", e.Message);
         }
     }
 
@@ -384,120 +406,113 @@ public class Products : System.Web.Services.WebService {
     }
 
     [WebMethod]
-    public void SaveGallery(string GalleryOwner, string Image) {
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        connection.Open();
+    public string DeleteImg(Guid? productId, string img) {
         try {
-            string sql = @"INSERT INTO Gallery VALUES
-                        (@GalleryId, @GalleryOwner, @Image)";
-            Guid GalleryId = Guid.NewGuid();
-            SqlCommand command = new SqlCommand(sql, connection);
-            command.Parameters.Add(new SqlParameter("GalleryId", GalleryId));
-            command.Parameters.Add(new SqlParameter("GalleryOwner", GalleryOwner));
-            command.Parameters.Add(new SqlParameter("Image", Image));
-            command.ExecuteNonQuery();
-            connection.Close();
-
-            GetAllGallery();
-
-            _InfoMessage = string.Format(@"
-                        <div class=""alert alert-success alert-dismissable"">
-                            <a href=""#"" class=""close"" data-dismiss=""alert"" aria-label=""close"">×</a>
-                            <strong>Product saved Successfully!</strong>
-                        </div>");
-
-        }
-        catch (Exception ex)
-        {
-            _InfoMessage = string.Format(@"
-                     <div class=""alert alert-danger alert-dismissable"">
-                            <a href=""#"" class=""close"" data-dismiss=""alert"" aria-label=""close"">×</a>
-                            <strong>Error! Product not saved.</strong>
-                        </div>");
-            return;
+            string path = Server.MapPath(string.Format("~/upload/{0}/gallery", productId));
+            if (Directory.Exists(path)) {
+                string[] gallery = Directory.GetFiles(path);
+                foreach (string file in gallery) {
+                    if (Path.GetFileName(file) == img) {
+                        File.Delete(file);
+                    }
+                }
+            }
+            return JsonConvert.SerializeObject(GetGallery(productId), Formatting.Indented);
+        } catch (Exception e) {
+            return null;
         }
     }
 
-    [WebMethod]
-    public void GetAllGallery() {
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        connection.Open();
-        SqlCommand command = new SqlCommand("SELECT GalleryOwner, Image FROM Gallery", connection);
-        SqlDataReader reader = command.ExecuteReader();
-        List<Gallery> gallery = new List<Gallery>();
-        while (reader.Read()) {
-            Gallery yy = new Gallery() {
-                GalleryOwner = reader.GetGuid(0),
-                Image = reader.GetString(1)
-            };
-            gallery.Add(yy);
-        }
+    //[WebMethod]
+    //public string SaveGallery(string GalleryOwner, string Image) {
+    //    SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+    //    connection.Open();
+    //    try {
+    //        string sql = @"INSERT INTO Gallery VALUES
+    //                    (@GalleryId, @GalleryOwner, @Image)";
+    //        Guid GalleryId = Guid.NewGuid();
+    //        SqlCommand command = new SqlCommand(sql, connection);
+    //        command.Parameters.Add(new SqlParameter("GalleryId", GalleryId));
+    //        command.Parameters.Add(new SqlParameter("GalleryOwner", GalleryOwner));
+    //        command.Parameters.Add(new SqlParameter("Image", Image));
+    //        command.ExecuteNonQuery();
+    //        connection.Close();
+    //        GetAllGallery();
+    //        return string.Format(@"Product saved Successfully!");
+    //    } catch (Exception e) {
+    //        return string.Format(@"Error! Product not saved. ({0})", e.Message);
+    //    }
+    //}
 
-        connection.Close();
-        string json = JsonConvert.SerializeObject(gallery, Formatting.Indented);
-        //CreateFolder("~/json/");
-        //WriteFile("~/json/gallery.json", json);
-    }
+    //[WebMethod]
+    //public void GetAllGallery() {
+    //    SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+    //    connection.Open();
+    //    SqlCommand command = new SqlCommand("SELECT GalleryOwner, Image FROM Gallery", connection);
+    //    SqlDataReader reader = command.ExecuteReader();
+    //    List<Gallery> gallery = new List<Gallery>();
+    //    while (reader.Read()) {
+    //        Gallery yy = new Gallery() {
+    //            GalleryOwner = reader.GetGuid(0),
+    //            Image = reader.GetString(1)
+    //        };
+    //        gallery.Add(yy);
+    //    }
+
+    //    connection.Close();
+    //    string json = JsonConvert.SerializeObject(gallery, Formatting.Indented);
+    //    //CreateFolder("~/json/");
+    //    //WriteFile("~/json/gallery.json", json);
+    //}
 
 
-    public string GetMainImage(string productId) { 
-        string mainImage = "";
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        connection.Open();
-        SqlCommand command = new SqlCommand("SELECT Image FROM Products WHERE ProductId = @ProductId", connection);
-        command.Parameters.Add(new SqlParameter("ProductId", productId));
-        SqlDataReader reader = command.ExecuteReader();
-        List<Gallery> gallery = new List<Gallery>();
-        while (reader.Read()) {
-            mainImage = reader.GetString(0);
-        }
-        return mainImage;
-    }
+    //public string GetMainImage(string productId) { 
+    //    string mainImage = "";
+    //    SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+    //    connection.Open();
+    //    SqlCommand command = new SqlCommand("SELECT Image FROM Products WHERE ProductId = @ProductId", connection);
+    //    command.Parameters.Add(new SqlParameter("ProductId", productId));
+    //    SqlDataReader reader = command.ExecuteReader();
+    //    List<Gallery> gallery = new List<Gallery>();
+    //    while (reader.Read()) {
+    //        mainImage = reader.GetString(0);
+    //    }
+    //    return mainImage;
+    //}
 
-    [WebMethod]
-    public void DeleteGallery(string productId) {
+    public void DeleteGallery(Guid? productId) {
         string[] gallery = null;
-        string galleryPath = Server.MapPath("~/upload/" + productId + "/gallery/");
-
+        string galleryPath = Server.MapPath(string.Format("~/upload/{0}/gallery/", productId.ToString()));
         if (Directory.Exists(galleryPath)) {
-            gallery = Directory.GetFiles(@galleryPath);
-
+            gallery = Directory.GetFiles(galleryPath);
             foreach (string filePath in gallery) {
                    File.Delete(filePath);
             }
         }
-
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        connection.Open();
-        SqlCommand command = new SqlCommand("DELETE FROM Gallery WHERE [GalleryOwner] = @GalleryOwner", connection);
-        command.Parameters.Add(new SqlParameter("GalleryOwner", productId));
-
-        command.ExecuteNonQuery();
-        connection.Close();
     }
 
 
-    [WebMethod]
-    public void DeleteImage(string productId) {
-        string imagePath = "~/upload/" + productId + "/mainimage/" + GetMainImage(productId);
-        if (File.Exists(Server.MapPath(imagePath))) {
-            File.Delete(Server.MapPath(imagePath));
-        }
+    //[WebMethod]
+    //public void DeleteImage(string productId) {
+    //    string imagePath = "~/upload/" + productId + "/mainimage/" + GetMainImage(productId);
+    //    if (File.Exists(Server.MapPath(imagePath))) {
+    //        File.Delete(Server.MapPath(imagePath));
+    //    }
 
-        string image = "";
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        connection.Open();
-        string sql = @"
-                        UPDATE Products SET
-                        [Image] = @Image
-                        WHERE [ProductId] = @ProductId";
-        SqlCommand command = new SqlCommand(sql, connection);
-        command.Parameters.Add(new SqlParameter("Image", image));
-        command.Parameters.Add(new SqlParameter("ProductId", productId));
+    //    string image = "";
+    //    SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+    //    connection.Open();
+    //    string sql = @"
+    //                    UPDATE Products SET
+    //                    [Image] = @Image
+    //                    WHERE [ProductId] = @ProductId";
+    //    SqlCommand command = new SqlCommand(sql, connection);
+    //    command.Parameters.Add(new SqlParameter("Image", image));
+    //    command.Parameters.Add(new SqlParameter("ProductId", productId));
 
-        command.ExecuteNonQuery();
-        connection.Close();
-    }
+    //    command.ExecuteNonQuery();
+    //    connection.Close();
+    //}
 
     [WebMethod]
     public string LoadProductGallery(Guid? productId) {
@@ -530,7 +545,7 @@ public class Products : System.Web.Services.WebService {
         //x.dateModified = reader.GetValue(16) == DBNull.Value ? DateTime.Today : reader.GetDateTime(16);
         //x.isActive = reader.GetValue(17) == DBNull.Value ? 1 : reader.GetInt32(17);
         x.displayType = reader.GetValue(18) == DBNull.Value ? 0 : reader.GetInt32(18);
-        x.gellery = GetGallery(x.productId);
+        x.gallery = GetGallery(x.productId);
         return x;
     }
 

@@ -60,11 +60,11 @@
         headers: {  
             "Content-Type": "application/json"  
         }  
-    }).success(function (response) {  
-        $scope.productGroups = JSON.parse(response.d);
-    })  
-    .error(function (error) {   
-    }); 
+        }).success(function (response) {  
+            $scope.productGroups = JSON.parse(response.d);
+        })  
+        .error(function (error) {   
+        }); 
 
 
      var getProducts = function () {
@@ -166,6 +166,7 @@
             data: { productId: id },
         })
         .then(function (response) {
+            debugger;
             $scope.p = JSON.parse(response.data.d);
         },
        function (response) {
@@ -260,5 +261,20 @@
         templateUrl: 'partials/products.html'
     };
 })
+
+.directive('checkImage', function ($http) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            attrs.$observe('ngSrc', function (ngSrc) {
+                $http.get(ngSrc).success(function () {
+                }).error(function () {
+                    element.attr('src', './img/default.png'); // set default image
+                });
+            });
+        }
+    };
+});
+
 
 ;

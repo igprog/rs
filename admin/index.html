@@ -99,93 +99,125 @@
 
     <script type="text/ng-template" id="product">
         <div class="container" style="padding-bottom:40px">
-            <h2>Product</h2>
+            <div>
+                <h2>Oglasi</h2>
+            </div>
 
             <!--<button class="btn btn-primary" ng-click="f.getProducts(u.userId)">Load</button>-->
 
-            <div ng-repeat="x in p">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Oglas br. {{$index}}</div>
+            <div ng-repeat="x in p" class="mt-10">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                Oglas br. {{$index+1}}
+                            </div>
+                            <div class="col-sm-6">
+                                <button ng-click="f.deleteProduct(x, u)" class="btn btn-danger pull-right"><i class="fa fa-trash-o"></i> Briši</button>
+                            </div>
+                        </div>                      
+                    </div>
                     <div class="panel-body">
-                        <form>
-                            <div class="form-group">
-                                <label>Naziv:</label>
-                                <input ng-model="x.title" type="text" class="form-control">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <form>
+                                    <div class="form-group">
+                                        <label>Grupa:</label>
+                                        <select ng-model="x.productGroup" class="form-control">
+                                            <option ng-repeat="x in pg" value="{{x.productGroupId}}">{{x.title}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Naziv:</label>
+                                        <input ng-model="x.title" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Kratki opis</label>
+                                        <input ng-model="x.shortDescription" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Dugi opis</label>
+                                        <textarea ng-model="x.longDescription" rows="4" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Ulica i broj</label>
+                                        <input ng-model="x.address" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Poštanski broj</label>
+                                        <input ng-model="x.postalCode" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Grad</label>
+                                        <input ng-model="x.city" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Telefon</label>
+                                        <input ng-model="x.phone" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input ng-model="x.email" type="email" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Web</label>
+                                        <input ng-model="x.web" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Cijena</label>
+                                        <input ng-model="x.price" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Latitude</label>
+                                        <input ng-model="x.latitude" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Longitude</label>
+                                        <input ng-model="x.longitude" type="text" class="form-control">
+                                    </div>
+                                    <div class="text-right">
+                                        <button ng-click="f.save(x, u)" type="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Spremi</button>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="form-group">
-                                <label>Kratki opis</label>
-                                <input ng-model="x.shortDescription" type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Dugi opis</label>
-                                <textarea ng-model="x.longDescription" rows="4" class="form-control"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Ulica i broj</label>
-                                <input ng-model="x.address" type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Poštanski broj</label>
-                                <input ng-model="x.postalCode" type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Grad</label>
-                                <input ng-model="x.city" type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Telefon</label>
-                                <input ng-model="x.phone" type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input ng-model="x.email" type="email" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Web</label>
-                                <input ng-model="x.web" type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Cijena</label>
-                                <input ng-model="x.price" type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Latitude</label>
-                                <input ng-model="x.latitude" type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Longitude</label>
-                                <input ng-model="x.longitude" type="text" class="form-control">
-                            </div>
-                            <button ng-click="f.update(x)" type="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Spremi</button>
-                            <hr />
-                        </form>
-
-                        <label>Galerija</label>
-                        <form id="formUpload" ng-submit="f.upload(x)" enctype="multipart/form-data" method="post">
-                            <input id="imgId" name="imgId" ng-model="x.productId" type="text" hidden="hidden">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <input ng-model="file" name="UploadedFile" id="UploadedFile" type="file" accept="image/*" class="form-control">
-                                </div>
-                                <div class="col-sm-4">
-                                    <button type="submit" class="btn btn-primary text-capitalize"><i class="fa fa-upload"></i> Upload</button>
-                                </div>
-                            </div>
-                        </form>
-                        <div>
-                            <div class="row" style="margin-top:10px">
-                                <div ng-repeat="y in x.gellery track by $index" class="col-sm-3">
-                                    <img src="../upload/{{x.productId}}/gallery/{{y}}" alt="{{x.title}}" class="img-thumbnail" />
+                            <div class="col-sm-6">
+                                <div ng-if="x.productId">
+                                    <label>Galerija</label>
+                                    <form id="formUpload_{{x.productId}}" ng-submit="f.upload(x, $index)" enctype="multipart/form-data" method="post">
+                                        <input id="imgId" name="imgId" ng-model="x.productId" type="text" hidden="hidden">
+                                        <div class="row">
+                                            <div class="col-sm-8">
+                                                <input ng-model="file" name="UploadedFile" id="UploadedFile" type="file" accept="image/*" class="form-control">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <button type="submit" class="btn btn-primary text-capitalize"><i class="fa fa-upload"></i> Upload</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div>
+                                        <div class="row" style="margin-top:10px">
+                                            <div ng-repeat="y in x.gallery track by $index">
+                                                <div class="input-group mt-10">
+                                                    <img src="../upload/{{x.productId}}/gallery/{{y}}" alt="{{x.title}}" class="img-thumbnail" />
+                                                    <span ng-click="f.deleteImg(x, y)" class="btn btn-default input-group-addon" title="Briši"><i class="fa fa-times text-danger"></i></span>
+                                                </div>
+                                            </div>
+                                            <pre>{{x.gallery}}</pre>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
 
-            <pre>{{u | json}}</pre>
-            <pre>{{p | json}}</pre>
+            <div class="text-right">
+                <button ng-click="f.newProduct()" class="btn btn-success"><i class="fa fa-plus"></i> Novi oglas</button>
+            </div>
+
+            <!--<pre>{{u | json}}</pre>
+            <pre>{{p | json}}</pre>-->
 
         </div>
     </script>

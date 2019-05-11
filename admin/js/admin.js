@@ -66,11 +66,27 @@
         });
     }
 
+
+    var getProductGroups = function (id) {
+        $http({
+            url: "../ProductGroups.asmx/GetProductGroups",
+            method: 'POST',
+            data: '',
+        })
+        .then(function (response) {
+            $scope.pg = JSON.parse(response.data.d);
+        },
+       function (response) {
+           alert(response.data.d);
+       });
+    }
+    getProductGroups();
+
     var getProducts = function (id) {
         $http({
             url: "../Products.asmx/GetAllProductsByUserId",
             method: 'POST',
-            data: { UserId: id },
+            data: { userId: id },
         })
         .then(function (response) {
             $scope.p = JSON.parse(response.data.d);
@@ -80,71 +96,111 @@
        });
     }
 
-    var update = function (x) {
+    var save = function (x, u) {
         $http({
-            url: "../Products.asmx/Update",
+            url: "../Products.asmx/SaveProduct",
             method: 'POST',
-            data: { product: x },
+            data: { product: x, user: u },
         })
         .then(function (response) {
-            alert(response.data.d);
+            x.productId = JSON.parse(response.data.d).productId;
         },
        function (response) {
            alert(response.data.d);
        });
     }
 
-    var upload = function (x) {
-        var content = new FormData(document.getElementById("formUpload"));
+    var upload = function (x, idx) {
+        var content = new FormData(document.getElementById('formUpload_' + x.productId));
         $http({
             url: '../UploadHandler.ashx',
             method: 'POST',
             headers: { 'Content-Type': undefined },
             data: content,
         }).then(function (response) {
-            var productId = response.data; // '../upload/' + $scope.u.userId + '/gallery/' + 'todo.png';
-            x.gallery = loadProductGallery(productId);
-
-            //if (response.data !== 'OK') {
-            //    alert(response.data);
-            //}
+           loadProductGallery(x, idx);
         },
        function (response) {
            alert(response.data.d);
        });
     }
 
-    var loadProductGallery = function (x) {
+    var loadProductGallery = function (x, idx) {
         $http({
             url: "../Products.asmx/LoadProductGallery",
             method: 'POST',
-            data: { productId: x },
+            data: { productId: x.productId },
         })
         .then(function (response) {
-            return response.data.d;
+            x.gallery = JSON.parse(response.data.d);
         },
        function (response) {
-           return null; //alert(response.data.d);
+            alert(response.data.d);
        });
     }
 
-
-    $scope.f = {
-        getProducts: function (id) {
-            return getProducts(id);
+    var deleteImg = function (x, img) {
+        $http({
+            url: "../Products.asmx/DeleteImg",
+            method: 'POST',
+            data: { productId: x.productId, img: img },
+        })
+        .then(function (response) {
+            x.gallery = JSON.parse(response.data.d);
         },
-        update: function (x) {
-            return update(x)
-        },
-        upload: function () {
-            return upload();
-        }
-
+       function (response) {
+           alert(response.data.d);
+       });
     }
 
-    
+    var newProduct = function () {
+        $http({
+            url: "../Products.asmx/Init",
+            method: 'POST',
+            data: '',
+        })
+        .then(function (response) {
+            $scope.p.push(JSON.parse(response.data.d));
+        },
+       function (response) {
+           alert(response.data.d);
+       });
+    }
 
+    var deleteProduct = function (x, u) {
+        $http({
+            url: "../Products.asmx/Delete",
+            method: 'POST',
+            data: { productId: x.productId },
+        })
+        .then(function (response) {
+            getProducts(u.userId);
+        },
+       function (response) {
+           alert(response.data.d);
+       });
+    }
 
+    $scope.f = {
+        getProducts: (id) => {
+            return getProducts(id);
+        },
+        save: (x, u) => {
+            return save(x, u)
+        },
+        upload: (x, idx) => {
+            return upload(x, idx);
+        },
+        deleteImg: (x, img) => {
+            return deleteImg(x, img);
+        },
+        newProduct: () => {
+            return newProduct();
+        },
+        deleteProduct: (x, u) => {
+            return deleteProduct(x, u);
+        }
+    }
 
 })
 
