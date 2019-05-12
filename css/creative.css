@@ -416,10 +416,12 @@ body {
 }
 
 /**** My style ****/
+.m-10 {
+    margin:10px;
+}
 .mt-10{
     margin-top:10px;
 }
-
 .p-30 {
     padding:30px;
 }

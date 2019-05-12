@@ -1,14 +1,11 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Riviera Split</title>
 
     <!-- Bootstrap Core CSS -->
@@ -45,7 +42,6 @@
 
     <!-- <div ui-view></div>-->
 
-
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top" style="color:black">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -80,7 +76,7 @@
                 <div class="col-sm-6">
                     <img ng-if="p.gallery[0]" src="./upload/{{p.productId}}/gallery/{{p.gallery[0]}}" check-image alt="{{p.title}}" class="img-thumbnail" title="{{p.title}}" />
                     <img ng-if="!p.gallery[0]" src="./img/default.png" alt="{{p.title}}" class="img-thumbnail" title="{{p.title}}" />
-                    <!--<img src="upload/{{p.productId}}/mainimage/{{p.image}}" class="img-responsive" alt="{{x.title}}" />-->
+
                 </div>
                 <div class="col-sm-6">
                     <h2>{{p.shortDescription}}</h2>
@@ -107,8 +103,10 @@
                 <hr />
                 <div ng-if="p.gallery.length>1" class="text-center">
                     <label class="text-uppercase lead">{{'gallery' | translate}}</label>
-                    <div class="mt-10" ng-repeat="x in p.gallery" >
-                        <img ng-if="$index>0" src="../upload/{{p.productId}}/gallery/{{x}}" alt="{{x.title}}" />
+                    <div class="row">
+                        <div ng-if="$index>0" class="col-sm-6" ng-repeat="x in p.gallery">
+                            <img src="../upload/{{p.productId}}/gallery/{{x}}" alt="{{x.title}}" class="img-responsive m10" />
+                        </div>
                     </div>
                 </div>
             </div>

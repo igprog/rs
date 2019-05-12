@@ -4,7 +4,6 @@
         <div class="row">
             <div class="col-xs-6">
                 <img ng-if="x.gallery[0]" src="./upload/{{x.productId}}/gallery/{{x.gallery[0]}}" check-image alt="{{x.title}}" class="img-thumbnail" title="{{x.title}}" />
-                <!--<img ng-if="x.gallery[0]" ng-src="../upload/{{x.productId}}/gallery/{{x.gallery[0]}}" check-image alt="{{x.title}}" class="img-thumbnail" title="{{x.title}}" />-->
                 <img ng-if="!x.gallery[0]" src="./img/default.png" alt="{{x.title}}" class="img-thumbnail" title="{{x.title}}" />
             </div>
             <div class="col-xs-6">
@@ -23,20 +22,16 @@
                 </div>
             </div>
             <div class="col-xs-12">
-            <span ng-if="x.shortDescription">{{x.shortDescription}}</span>
-              <!--  <tourtraveln class="booking-item-price-from">{{x.shortDescription}}</tourtraveln>
-                <tourtraveln class="booking-item-price">€{{x.price}}</tourtraveln>-->
+                <span ng-if="x.shortDescription">{{x.shortDescription}}</span>
             </div>
-             <div class="col-xs-12">
-            <label ng-if="x.price">€ {{x.price}}</label> 
-             </div>
+            <div class="col-xs-12">
+                <label ng-if="x.price">€ {{x.price}}</label>
+            </div>
         </div>
-        <div>
-            <div>
-                <a href="product.html?id={{x.productId}}&lang={{lang}}" class="btn btn-default">
-                    Read more...
-                </a>
-            </div>
+        <div class="text-right">
+            <a href="product.html?id={{x.productId}}&lang={{lang}}" class="btn btn-default">
+                {{'read more' | translate}}...
+            </a>
         </div>
         <!--<div>
             <div ng-controller="ProductModalPopupCtrl">
