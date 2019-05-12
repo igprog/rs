@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using System.Runtime.Serialization;
 
 /// <summary>
-/// Summary description for ProductGroups
+/// ProductGroups
 /// </summary>
 [WebService(Namespace = "http://rivierasplit.com/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]

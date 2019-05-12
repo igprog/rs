@@ -1,20 +1,19 @@
-﻿<div class="row well" style="color: black; background-color:lightskyblue; opacity: 0.8;
-    text-align: center">
-    <div class="col-md-4">
+﻿<div style="color: black; text-align: center">
+    <div class="mt-10">
         <select ng-model="productGroupOption" ng-change="filter(productGroupOption)" class="form-control">
             <option disabled="disabled" ng-selected="true" value="">Filter By Category...</option>
             <option value="">All Category</option>
             <option ng-repeat="x in productGroups" value="{{x.productGroupId}}">{{x.title}}</option>
         </select>
     </div>
-    <div class="col-md-4">
+    <div class="mt-10">
         <select class="form-control" ng-model="cityOption" ng-change="filter(cityOption)">
             <option disabled="disabled" ng-selected="true" value="">Filter By Town...</option>
             <option value="">All Towns</option>
             <option ng-repeat="x in cities" value="{{x.City}}">{{x.City}}</option>
         </select>
     </div>
-    <div class="col-md-4">
+    <div class="mt-10">
         <select class="form-control" ng-model="orderOption" ng-change="sort(orderOption)">
             <option disabled="disabled" ng-selected="true" value="">Order By...</option>
             <option>Distance</option>

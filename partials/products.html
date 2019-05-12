@@ -1,6 +1,6 @@
 ﻿<div class="row" ng-controller="appCtrl">
-   <div class="col-md-4"  ng-repeat="x in products | filter:{ ProductGroup: filtercategory } | filter:filtervalue | orderBy:ordervalue">
-    <div class="booking-item booking-item-small well">
+   <div class="col-sm-3" ng-repeat="x in products | filter:{ ProductGroup: filtercategory } | filter:filtervalue | orderBy:ordervalue">
+    <div class="booking-item booking-item-small well" style="min-height:230px">
         <div class="row">
             <div class="col-xs-6">
                 <img ng-if="x.gallery[0]" src="./upload/{{x.productId}}/gallery/{{x.gallery[0]}}" check-image alt="{{x.title}}" class="img-thumbnail" title="{{x.title}}" />
@@ -28,7 +28,7 @@
                 <tourtraveln class="booking-item-price">€{{x.price}}</tourtraveln>-->
             </div>
              <div class="col-xs-12">
-            <label ng-if="x.price">€{{x.price}}</label> 
+            <label ng-if="x.price">€ {{x.price}}</label> 
              </div>
         </div>
         <div>
