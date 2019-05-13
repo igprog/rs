@@ -10,7 +10,7 @@
         $scope.islogin = false;
         $scope.u = [];
         sessionStorage.clear();
-        functions.post('Users', 'Init', {}).then((d) => {
+        functions.post('../Users', 'Init', {}).then((d) => {
             $scope.u = d;
         });
     }
@@ -18,7 +18,7 @@
 
     var login = function (u) {
         sessionStorage.clear();
-        functions.post('Users', 'Login', { userName: u.userName, password: u.password }).then((d) => {
+        functions.post('../Users', 'Login', { userName: u.userName, password: u.password }).then((d) => {
             if (d.userName === u.userName) {
                 $scope.u = d;
                 sessionStorage.setItem("username", $scope.u.userName);
