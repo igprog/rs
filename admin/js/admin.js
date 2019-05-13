@@ -1,52 +1,60 @@
-﻿angular.module('admin', [])
-.controller('adminCtrl', function ($scope, $http) {
+﻿angular.module('admin', ['functions'])
+.controller('adminCtrl', ['$scope', '$http', 'functions', function ($scope, $http, functions) {
 
     $scope.toggleTpl = function (x) {
         $scope.tpl = x;
     };
     $scope.toggleTpl('login');
 
-    var init = function () {
+    var init = () => {
         $scope.islogin = false;
         $scope.u = [];
         sessionStorage.clear();
-        $http({
-            url: '../Users.asmx/Init',
-            method: "POST",
-            data: ''
-        })
-        .then(function (response) {
-            $scope.u = JSON.parse(response.data.d);
-        },
-        function (response) {
-            alert(response.data.d);
+        functions.post('Users', 'Init', {}).then((d) => {
+            $scope.u = d;
         });
     }
     init();
 
     var login = function (u) {
         sessionStorage.clear();
-        $http({
-            url: '../Users.asmx/Login',
-            method: 'POST',
-            data: { userName: u.userName, password: u.password }
-        })
-        .then(function (response) {
-            if (JSON.parse(response.data.d).userName === u.userName) {
-                $scope.u = JSON.parse(response.data.d);
+        functions.post('Users', 'Login', { userName: u.userName, password: u.password }).then((d) => {
+            if (d.userName === u.userName) {
+                $scope.u = d;
                 sessionStorage.setItem("username", $scope.u.userName);
                 $scope.islogin = true;
                 getProducts($scope.u.userId);
                 $scope.toggleTpl('product');
-               // window.location.href = "Products.aspx?uid=" + $scope.u.userId + "&type=" + $scope.user.adminType;
+                // window.location.href = "Products.aspx?uid=" + $scope.u.userId + "&type=" + $scope.user.adminType;
             } else {
                 alert("Error Login!");
             }
-        },
-        function (response) {
-            alert(response.data.d);
         });
     }
+
+    //var login = function (u) {
+    //    sessionStorage.clear();
+    //    $http({
+    //        url: '../Users.asmx/Login',
+    //        method: 'POST',
+    //        data: { userName: u.userName, password: u.password }
+    //    })
+    //    .then(function (response) {
+    //        if (JSON.parse(response.data.d).userName === u.userName) {
+    //            $scope.u = JSON.parse(response.data.d);
+    //            sessionStorage.setItem("username", $scope.u.userName);
+    //            $scope.islogin = true;
+    //            getProducts($scope.u.userId);
+    //            $scope.toggleTpl('product');
+    //           // window.location.href = "Products.aspx?uid=" + $scope.u.userId + "&type=" + $scope.user.adminType;
+    //        } else {
+    //            alert("Error Login!");
+    //        }
+    //    },
+    //    function (response) {
+    //        alert(response.data.d);
+    //    });
+    //}
 
     var signup = function (u, accept) {
         if (u.password !== $scope.passwordConfirm) {
@@ -214,7 +222,7 @@
         }
     }
 
-})
+}])
 
 
 ;
