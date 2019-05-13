@@ -25,6 +25,29 @@
 .controller('appCtrl', ['$scope', '$http', '$translate', '$translatePartialLoader', 'functions', function ($scope, $http, $translate, $translatePartialLoader, functions) {
 
     $scope.message = "Web page under construction.";
+	
+	var reloadPage = () => {
+        if (typeof (Storage) !== 'undefined') {
+            if (localStorage.version) {
+                if (localStorage.version != $rootScope.config.version) {
+                    localStorage.version = $rootScope.config.version;
+                    window.location.reload(true);
+                }
+            } else {
+                localStorage.version = $rootScope.config.version;
+            }
+        }
+    }
+
+    var getConfig = () => {
+        $http.get('./config/config.json')
+          .then(function (response) {
+              $sessionStorage.config = response.data;
+              $scope.config = response.data;
+              reloadPage();
+          });
+    };
+    getConfig();
 
     $scope.lang = 'hr';
     $scope.setLanguage = function (x) {

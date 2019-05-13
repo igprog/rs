@@ -1,0 +1,48 @@
+﻿{
+  "version": "1.0.0",
+  "backend": "",
+  "appname": "rivierasplit.com",
+  "debug": true,
+  "iban": "",
+  "swift": "",
+  "bank": "",
+  "company": "",
+  "address": "",
+  "oib": 0,
+  "email": "igprog@yahoo.com",
+  "emailcc": [ "program.prehrane@yahoo.com", "igprog@yahoo.com" ],
+  "phone": "+385 98 330 966",
+  "language": {
+    "code": "hr",
+    "title": "hrvatski"
+  },
+  "languages": [
+    {
+      "code": "hr",
+      "title": "hrvatski"
+    },
+    {
+      "code": "en",
+      "title": "english"
+    }
+  ],
+  "currency": {
+    "code": "hrk",
+    "symbol": "kn",
+    "course": 7.5
+  },
+  "currencies": [
+    {
+      "code": "hrk",
+      "symbol": "kn",
+      "course": 7.5
+    },
+    {
+      "code": "eur",
+      "symbol": "€",
+      "course": 1
+    }
+  ],
+  "prodctstoshow": 8,
+  "vatcoeff": 1.25
+}
