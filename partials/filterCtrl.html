@@ -1,25 +1,25 @@
 ﻿<div style="color: black; text-align: center">
     <div class="mt-10">
         <select ng-model="productGroupOption" ng-change="filter(productGroupOption)" class="form-control">
-            <option disabled="disabled" ng-selected="true" value="">Filter By Category...</option>
-            <option value="">All Category</option>
+            <option disabled="disabled" ng-selected="true" value="">{{'filter by category' | translate}}...</option>
+            <option value="">{{'all categories' | translate}}</option>
             <option ng-repeat="x in productGroups" value="{{x.productGroupId}}">{{x.title}}</option>
         </select>
     </div>
     <div class="mt-10">
         <select class="form-control" ng-model="cityOption" ng-change="filter(cityOption)">
-            <option disabled="disabled" ng-selected="true" value="">Filter By Town...</option>
-            <option value="">All Towns</option>
+            <option disabled="disabled" ng-selected="true" value="">{{'filter by town' | translate}}...</option>
+            <option value="">{{'all towns' | translate}}</option>
             <option ng-repeat="x in cities" value="{{x.City}}">{{x.City}}</option>
         </select>
     </div>
     <div class="mt-10">
         <select class="form-control" ng-model="orderOption" ng-change="sort(orderOption)">
-            <option disabled="disabled" ng-selected="true" value="">Order By...</option>
-            <option>Distance</option>
-            <option>Price</option>
-            <option>City</option>
-            <option>Title</option>
+            <option disabled="disabled" ng-selected="true" value="">{{'order by' | translate}}...</option>
+            <option>{{'distance_' | translate}}</option>
+            <option>{{'price_' | translate}}</option>
+            <option>{{'city_' | translate}}</option>
+            <option>{{'title_' | translate}}</option>
         </select>
     </div>
 </div>

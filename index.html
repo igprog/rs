@@ -1,8 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -60,7 +58,6 @@
                 <ul class="nav navbar-nav navbar-right">
                 <li><a href="admin/signup.html"><i class="fa fa-sign-in"></i> {{ 'Sign Up' | translate }}</a></li>
                 <li><a href="admin/"><i class="fa fa-sign-out"></i> {{ 'Login' | translate }}</a></li>
-                    <!--<li ng-repeat="x in productGroups"><a class="page-scroll" href="#about">{{x.title | translate}}</a></li>-->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -77,36 +74,28 @@
                     <input type="button" value="en" class="btn btn-default" ng-click="setLanguage('en')" />
                     <input type="button" value="de" class="btn btn-default" ng-click="setLanguage('de')" />
                 </div>
-                <!--<p>{{ 'Under construction' | translate }}</p>-->
-                <!-- <a href="#products" class="btn btn-primary btn-xl page-scroll">{{ 'Find out more' | translate }}</a>-->
-                <!-- <a href="#products" class="btn btn-primary btn-xl page-scroll">{{ 'Start Searching' | translate }}</a>
-                -->
-                <!--test
-                <pre>{{aaa}}</pre>-->
-
-
-                <div class="row mt-10" style="color:lightskyblue">
+                <div class="row mt-10 text-uppercase" style="color:lightskyblue">
                     <div class="col-sm-4">
                         <a href="#products" ng-click="filter('b8b3ae5d-cd80-416f-99a9-b79916820e97')" title="{{'search accommodation' | translate}}">
-                            <div class="well">
+                            <div class="well transparent">
                                 <i class="fa fa-home fa-4x"></i>
-                                <h2>ACCOMMODATION</h2>
+                                <h2>{{'accommodation' | translate}}</h2>
                             </div>
                         </a>
                     </div>
                     <div class="col-sm-4">
                         <a href="#products" ng-click="filter('26c0df2f-fdae-4680-9a68-4bdff4ea1d65')" title="{{'search transport' | translate}}">
-                            <div class="well">
+                            <div class="well transparent">
                                 <i class="fa fa-car fa-4x"></i>
-                                <h2>TRANSPORT</h2>
+                                <h2>{{'transport' | translate}}</h2>
                             </div>
                         </a>
                     </div>
                     <div class="col-sm-4">
                         <a href="#products" ng-click="filter('34b7dfb2-42a5-4edc-868d-88c91dcd3e68')" title="{{'search eating' | translate}}">
-                            <div class="well">
+                            <div class="well transparent">
                                 <i class="fa fa-cutlery fa-4x"></i>
-                                <h2>EATING</h2>
+                                <h2>{{'eating' | translate}}</h2>
                             </div>
                         </a>
                     </div>
@@ -114,17 +103,16 @@
                 <div class="btn btn-primary btn-xl page-scroll">
                     <input ng-model="searchValue" ng-change="filter(searchValue)" type="text"
                            style="color:Black; border-radius:10px; height:30px; padding: 15px; margin-right:3px"
-                           placeholder="Search for...">
+                           placeholder="{{'search for' | translate}}...">
                     <a href="#products" class="page-scroll" style="color:White"><span class="fa fa-search"></span></a>
                 </div>
             </div>
         </div>
     </header>
 
-
-       <!-- booking section -->
+    <!-- booking section -->
     <div id="products">
-    <h2 class="lead text-center pt3">Find closest accommodation, event or other services in Split surrounding.</h2>
+    <h2 class="lead text-center pt3">{{'find closest accommodation, event or other services in split surrounding' | translate}}.</h2>
         <hr />
 
         <div class="row">
@@ -137,10 +125,11 @@
         </div>
     </div>
 
-
     <div class="text-right" style="margin:10px">
         <hr />
-        <p><a href="https://www.igprog.hr">igprog.hr</a></p>
+        <div class="text-right" style="padding:5px 10px 0px 0px">
+            <a href="https://www.igprog.hr" class="text-primary small" title="IG PROG, obrt za računalno programiranje">&copy {{today | date:'yyyy'}} {{config.copyright}}</a>
+        </div>
     </div>
 
       <!-- jQuery -->

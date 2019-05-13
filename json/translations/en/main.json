@@ -1,1 +1,24 @@
-{"Name":"Name","Services":"Services","Under construction":"Under construction","Contact":"Contact","Find out more":"Find out more"}
+{
+  "name": "Name",
+  "services": "Services",
+  "under construction": "Under construction",
+  "contact": "Contact",
+  "find out more": "Find out more",
+  "find closest accommodation, event or other services in split surrounding": "Find closest accommodation, event or other services in Split surrounding",
+  "accommodation": "Accommodation",
+  "transport": "Transport",
+  "eating": "Eating",
+  "search for": "Search for",
+  "read more": "Read more",
+  "all categories": "All categories",
+  "filter by category": "Filter by category",
+  "filter by town": "Filter by town",
+  "all towns": "All towns",
+  "order by": "Order by",
+  "distance_": "Distance",
+  "price_": "Price",
+  "city_": "City",
+  "title_":  "Title"
+
+
+}

@@ -25,6 +25,7 @@
 .controller('appCtrl', ['$scope', '$http', '$translate', '$translatePartialLoader', 'functions', function ($scope, $http, $translate, $translatePartialLoader, functions) {
 
     $scope.message = "Web page under construction.";
+    $scope.today = new Date();
 	
 	var reloadPage = () => {
         if (typeof (Storage) !== 'undefined') {

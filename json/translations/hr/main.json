@@ -1,1 +1,23 @@
-{"Name":"Ime","Services":"Usluge","Under construction":"Stranica je u izradi","Contact":"Kontakt","Find out more":"Saznajte više"}
+{
+  "Name": "Ime",
+  "Services": "Usluge",
+  "Under construction": "Stranica je u izradi",
+  "Contact": "Kontakt",
+  "find out more": "Saznajte više",
+  "find closest accommodation, event or other services in split surrounding": "Pronađite najbliži smještaj, događanje ili drugu uslugu u Splitu i okolici",
+  "accommodation": "Smještaj",
+  "transport": "Transport",
+  "eating": "Gastro",
+  "search for": "Pretraži",
+  "read more": "Saznaj više",
+  "all categories": "Sve kategorije",
+  "filter by category": "Filtriraj po kategoriji",
+  "filter by town": "Filtriraj po gradu",
+  "all towns": "Svi gradovi",
+  "order by": "Poredaj po",
+  "distance_": "Udaljenosti",
+  "price_": "Cijeni",
+  "city_": "Gradu",
+  "title_": "Nazivu"
+
+}

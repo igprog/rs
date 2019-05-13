@@ -82,7 +82,7 @@ aside {
 .navbar-default .navbar-header .navbar-toggle {
   font-weight: 700;
   font-size: 12px;
-  color: #fff;  /*#222222;*/
+  color: #000;  /*#222222;*/
   text-transform: uppercase;
 }
 .navbar-default .nav > li > a,
@@ -90,7 +90,7 @@ aside {
   text-transform: uppercase;
   font-weight: 700;
   font-size: 13px;
-  color: #fff;  /*#222222;*/
+  color: #000;  /*#222222;*/
 }
 .navbar-default .nav > li > a:hover,
 .navbar-default .nav > li > a:focus:hover {
@@ -427,4 +427,8 @@ body {
 }
 .navbar {
     border-radius: 0 !important;
+}
+.transparent {
+    background-color:#fff !important;
+    opacity:0.8 !important;
 }
