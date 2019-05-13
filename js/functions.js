@@ -3,19 +3,11 @@ functions.js
 (c) 2019 IG PROG, www.igprog.hr
 */
 angular.module('functions', [])
-
-.factory('functions', ['$http', '$window', function ($http, $window) {
+.factory('functions', ['$http', function ($http) {
     return {
-        isNullOrEmpty: (x) => {
-            var res = false;
-            if (x === '' || x == undefined || x == null) {
-                res = true;
-            }
-            return res;
-        },
         post: (service, method, data) => {
             return $http({
-                url: service + '.asmx/' + method,
+                url: '../' + service + '.asmx/' + method,
                 method: 'POST',
                 data: data
             })
@@ -27,6 +19,4 @@ angular.module('functions', [])
             });
         }
     }
-}])
-
-;
+}]);

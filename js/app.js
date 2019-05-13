@@ -29,20 +29,18 @@
 	var reloadPage = () => {
         if (typeof (Storage) !== 'undefined') {
             if (localStorage.version) {
-                if (localStorage.version != $rootScope.config.version) {
-                    localStorage.version = $rootScope.config.version;
+                if (localStorage.version !== $scope.config.version) {
+                    localStorage.version = $scope.config.version;
                     window.location.reload(true);
                 }
             } else {
-                localStorage.version = $rootScope.config.version;
+                localStorage.version = $scope.config.version;
             }
         }
     }
 
     var getConfig = () => {
-        $http.get('./config/config.json')
-          .then(function (response) {
-              $sessionStorage.config = response.data;
+        $http.get('../config/config.json').then(function (response) {
               $scope.config = response.data;
               reloadPage();
           });

@@ -17,7 +17,6 @@ using System.IO;
 [WebService(Namespace = "http://rivierasplit.com/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
 [System.Web.Script.Services.ScriptService]
-//[DataContract(IsReference = true)]
 public class Products : System.Web.Services.WebService {
 
     public Products () {
@@ -76,110 +75,84 @@ public class Products : System.Web.Services.WebService {
         }
     }
 
-    //public String GalleryImage { get; set; }
-
-    //[WebMethod]
-    //public String GetAllProducts() {
-    //    SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-    //    connection.Open();
-    //    SqlCommand command = new SqlCommand("SELECT ProductId, Title, Description, City, Price, Category, Latitude, Longitude FROM Products", connection);
-
-    //    SqlDataReader reader = command.ExecuteReader();
-    //    List<WebService> products = new List<WebService>();
-    //    while (reader.Read()) {
-    //        WebService xx = new WebService() {
-    //            ProductId = reader.GetGuid(0),
-    //            Title = reader.GetValue(1) == DBNull.Value ? "" : reader.GetString(1),
-    //            Description = reader.GetValue(2) == DBNull.Value ? "" : reader.GetString(2),
-    //            City = reader.GetValue(3) == DBNull.Value ? "" : reader.GetString(3),
-    //            Price = reader.GetValue(4) == DBNull.Value ? "" : reader.GetString(4),
-    //            Category = reader.GetValue(5) == DBNull.Value ? "" : reader.GetString(5),
-    //            Latitude = reader.GetValue(6) == DBNull.Value ? 0 : reader.GetDecimal(6),
-    //            Longitude = reader.GetValue(7) == DBNull.Value ? 0 : reader.GetDecimal(7)
-    //        };
-    //        products.Add(xx);
-    //    }
-    //    connection.Close();
-
-    //    string json = JsonConvert.SerializeObject(products, Formatting.Indented);
-    //    return json;
-
-    //}
-
-
     [WebMethod]
     public string GetAllProducts() {
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        connection.Open();
-        SqlCommand command = new SqlCommand("SELECT ProductId, ProductGroup, ProductOwner, Title, ShortDescription, LongDescription, Address, PostalCode, City, Phone, Email, Web, Price, Latitude, Longitude, Image, DateModified, IsActive, DisplayType FROM Products", connection);
-        SqlDataReader reader = command.ExecuteReader();
-        List<NewProduct> xx = new List<NewProduct>();
-        while (reader.Read()) {
-            NewProduct x = ReadProductData(reader);
-            xx.Add(x);
+        try {
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            connection.Open();
+            SqlCommand command = new SqlCommand("SELECT ProductId, ProductGroup, ProductOwner, Title, ShortDescription, LongDescription, Address, PostalCode, City, Phone, Email, Web, Price, Latitude, Longitude, Image, DateModified, IsActive, DisplayType FROM Products", connection);
+            SqlDataReader reader = command.ExecuteReader();
+            List<NewProduct> xx = new List<NewProduct>();
+            while (reader.Read()) {
+                NewProduct x = ReadProductData(reader);
+                xx.Add(x);
+            }
+            connection.Close();
+            return JsonConvert.SerializeObject(xx, Formatting.Indented);
+        } catch (Exception e) {
+            return JsonConvert.SerializeObject(e.Message, Formatting.Indented);
         }
-        connection.Close();
-        return JsonConvert.SerializeObject(xx, Formatting.Indented);
     }
 
 
     [WebMethod]
     public string GetAllProductsByUserId(Guid userId) {
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        connection.Open();
-        SqlCommand command = new SqlCommand("SELECT ProductId, ProductGroup, ProductOwner, Title, ShortDescription, LongDescription, Address, PostalCode, City, Phone, Email, Web, Price, Latitude, Longitude, Image, DateModified, IsActive, DisplayType FROM Products WHERE @ProductOwner = ProductOwner", connection);
-        command.Parameters.Add(new SqlParameter("ProductOwner", userId));
-        SqlDataReader reader = command.ExecuteReader();
-        List<NewProduct> xx = new List<NewProduct>();
-        while (reader.Read()) {
-            NewProduct x = ReadProductData(reader);
-            xx.Add(x);
+        try {
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            connection.Open();
+            SqlCommand command = new SqlCommand("SELECT ProductId, ProductGroup, ProductOwner, Title, ShortDescription, LongDescription, Address, PostalCode, City, Phone, Email, Web, Price, Latitude, Longitude, Image, DateModified, IsActive, DisplayType FROM Products WHERE @ProductOwner = ProductOwner", connection);
+            command.Parameters.Add(new SqlParameter("ProductOwner", userId));
+            SqlDataReader reader = command.ExecuteReader();
+            List<NewProduct> xx = new List<NewProduct>();
+            while (reader.Read()) {
+                NewProduct x = ReadProductData(reader);
+                xx.Add(x);
+            }
+            connection.Close();
+            return JsonConvert.SerializeObject(xx, Formatting.Indented);
+        } catch (Exception e) {
+            return JsonConvert.SerializeObject(e.Message, Formatting.Indented);
         }
-        connection.Close();
-        return JsonConvert.SerializeObject(xx, Formatting.Indented);
     }
 
     [WebMethod]
     public string GetProductByProductId(string productId) {
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        connection.Open();
-        string sql = string.Format(@"SELECT ProductId, ProductGroup, ProductOwner, Title, ShortDescription, LongDescription, Address, PostalCode, City, Phone, Email, Web, Price, Latitude, Longitude, Image, DateModified, IsActive, DisplayType FROM Products WHERE ProductId = '{0}'", productId);
-        SqlCommand command = new SqlCommand(sql, connection);
-        SqlDataReader reader = command.ExecuteReader();
-        //List<NewProduct> xx = new List<NewProduct>();
-        NewProduct x = new NewProduct();
-        while (reader.Read()) {
-            //if (ProductId == reader.GetGuid(0).ToString()) {
+        try {
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            connection.Open();
+            string sql = string.Format(@"SELECT ProductId, ProductGroup, ProductOwner, Title, ShortDescription, LongDescription, Address, PostalCode, City, Phone, Email, Web, Price, Latitude, Longitude, Image, DateModified, IsActive, DisplayType FROM Products WHERE ProductId = '{0}'", productId);
+            SqlCommand command = new SqlCommand(sql, connection);
+            SqlDataReader reader = command.ExecuteReader();
+            NewProduct x = new NewProduct();
+            while (reader.Read()) {
                 x = ReadProductData(reader);
-               // xx.Add(x);
-           // }
+            }
+            reader.Close();
+            connection.Close();
+            return JsonConvert.SerializeObject(x, Formatting.Indented);
+        } catch(Exception e) {
+            return JsonConvert.SerializeObject(e.Message, Formatting.Indented);
         }
-        reader.Close();
-        //x.gallery = GetGallery(connection, productId);
-        connection.Close();
-
-        string json = JsonConvert.SerializeObject(x, Formatting.Indented);
-        return json;
-        //CreateFolder("~/json/");
-        //WriteFile("~/json/products.json", json);
     }
 
     [WebMethod]
     public string GetProductsByDisplayType(int displayType) {
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        connection.Open();
-        SqlCommand command = new SqlCommand("SELECT ProductId, ProductGroup, ProductOwner, Title, ShortDescription, LongDescription, Address, PostalCode, City, Phone, Email, Web, Price, Latitude, Longitude, Image, DateModified, IsActive, DisplayType FROM Products WHERE @DisplayType = DisplayType", connection);
-        command.Parameters.Add(new SqlParameter("DisplayType", displayType));
-        SqlDataReader reader = command.ExecuteReader();
-        List<NewProduct> xx = new List<NewProduct>();
-        while (reader.Read()) {
-            NewProduct x = ReadProductData(reader);
-            xx.Add(x);
+        try {
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            connection.Open();
+            SqlCommand command = new SqlCommand("SELECT ProductId, ProductGroup, ProductOwner, Title, ShortDescription, LongDescription, Address, PostalCode, City, Phone, Email, Web, Price, Latitude, Longitude, Image, DateModified, IsActive, DisplayType FROM Products WHERE @DisplayType = DisplayType", connection);
+            command.Parameters.Add(new SqlParameter("DisplayType", displayType));
+            SqlDataReader reader = command.ExecuteReader();
+            List<NewProduct> xx = new List<NewProduct>();
+            while (reader.Read()) {
+                NewProduct x = ReadProductData(reader);
+                xx.Add(x);
+            }
+            connection.Close();
+            return JsonConvert.SerializeObject(xx, Formatting.Indented);
+        } catch (Exception e) {
+            return JsonConvert.SerializeObject(e.Message, Formatting.Indented);
         }
-        connection.Close();
-
-        string json = JsonConvert.SerializeObject(xx, Formatting.Indented);
-        return json;
     }
 
     [WebMethod]
@@ -290,13 +263,12 @@ public class Products : System.Web.Services.WebService {
             connection.Open();
             string sql = string.Format(@"DELETE FROM Products WHERE [ProductId] = '{0}'", productId.ToString());
             SqlCommand command = new SqlCommand(sql, connection);
-            //command.Parameters.Add(new SqlParameter("ProductId", productId));
             command.ExecuteNonQuery();
             connection.Close();
-            DeleteGallery(productId);
-            return string.Format(@"Product deleted Successfully!");
+            DeleteProductFolder(productId);
+            return JsonConvert.SerializeObject("Product deleted Successfully!", Formatting.Indented);
         } catch (Exception e) {
-            return string.Format(@"Error! Product not deleted. ({0})", e.Message);
+            return JsonConvert.SerializeObject(string.Format(@"Error! Product not deleted. ({0})", e.Message), Formatting.Indented);
         }
     }
 
@@ -316,11 +288,7 @@ public class Products : System.Web.Services.WebService {
         }
         json = ("[" + json + "]").Replace("'", "\"");
         connection.Close();
-
         return json; 
-
-        //CreateFolder("~/json/");
-        //WriteFile("~/json/cities.json", json);
     }
 
     [WebMethod]
@@ -341,47 +309,12 @@ public class Products : System.Web.Services.WebService {
         }
     }
 
-
-    public void DeleteGallery(Guid? productId) {
-
-     
-       // string[] gallery = null;
-        string path = Server.MapPath(string.Format("~/upload/{0}/gallery/", productId.ToString()));
-
-     
-
+    public void DeleteProductFolder(Guid? productId) {
+        string path = Server.MapPath(string.Format("~/upload/{0}/", productId.ToString()));
         if (Directory.Exists(path)) {
             Directory.Delete(path, true);
-
-            //gallery = Directory.GetFiles(galleryPath);
-            //foreach (string filePath in gallery) {
-            //       File.Delete(filePath);
-            //}
         }
     }
-
-
-    //[WebMethod]
-    //public void DeleteImage(string productId) {
-    //    string imagePath = "~/upload/" + productId + "/mainimage/" + GetMainImage(productId);
-    //    if (File.Exists(Server.MapPath(imagePath))) {
-    //        File.Delete(Server.MapPath(imagePath));
-    //    }
-
-    //    string image = "";
-    //    SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-    //    connection.Open();
-    //    string sql = @"
-    //                    UPDATE Products SET
-    //                    [Image] = @Image
-    //                    WHERE [ProductId] = @ProductId";
-    //    SqlCommand command = new SqlCommand(sql, connection);
-    //    command.Parameters.Add(new SqlParameter("Image", image));
-    //    command.Parameters.Add(new SqlParameter("ProductId", productId));
-
-    //    command.ExecuteNonQuery();
-    //    connection.Close();
-    //}
 
     [WebMethod]
     public string LoadProductGallery(Guid? productId) {
@@ -427,120 +360,5 @@ public class Products : System.Web.Services.WebService {
         }
         return xx;
     }
-
-
-
-
-    //public void CreateFolder(string path) {
-    //    if (!Directory.Exists(Server.MapPath(path))) {
-    //        Directory.CreateDirectory(Server.MapPath(path));
-    //    }
-    //}
-
-    //public void WriteFile(string path, string value) {
-    //    File.WriteAllText(Server.MapPath(path), value);
-    //}
-
-
-    //[WebMethod]
-    //public void Upload(byte[] contents, string filename)
-    //{
-    //    var appData = Server.MapPath("~/App_Data");
-    //    var file = Path.Combine(appData, Path.GetFileName(filename));
-    //    File.WriteAllBytes(file, contents);
-    //}
-
-    //[WebMethod]
-    //public void UploadImages(String uploadPath, String file)
-    //{
-
-
-    //  //  HttpPostedFile uploadFile = file; // uploadFiles[i];
-    //   //             uploadFile.SaveAs(Server.MapPath(uploadPath) + uploadFile.FileName);
-
-
-
-
-    //    //if (fuUploadItems.HasFile)
-    //    //{
-    //    //    try
-    //    //    {
-    //    //        HttpFileCollection uploadFiles = Request.Files;
-    //    //        for (int i = 0; i < uploadFiles.Count; i++)
-    //    //        {
-    //    //            HttpPostedFile uploadFile = uploadFiles[i];
-    //    //            uploadFile.SaveAs(Server.MapPath(uploadPath) + uploadFile.FileName);
-    //    //            //   lblMessage.Text = lblMessage.Text + ", " + uploadFile.FileName;
-    //    //        }
-    //    //    }
-    //    //    catch (Exception ex)
-    //    //    {
-    //    //        lblMessage.Text = "Dogodila se pogreška prilikom Upload-a!";
-    //    //        return;
-    //    //    }
-    //    //}
-    //}
-
-
-
-    //    public void InsertGuest()
-    //    {
-    //        Properties properties = new Properties();
-    //        SqlConnection connection = new SqlConnection(properties.ConnectionString);
-    //        connection.Open();
-    //        try
-    //        {
-    //            string sql = @"INSERT INTO Guests
-    //                        VALUES  
-    //                       (@InquireDate,
-    //                        @FirstName,
-    //                        @LastName,
-    //                        @Email,
-    //                        @Arrival,
-    //                        @Departure,
-    //                        @Days,
-    //                        @Adults,
-    //                        @Children,
-    //                        @Message,
-    //                        @Apartment,
-    //                        @PricePerDay,
-    //                        @TotalPrice,
-    //                        @Deposit,
-    //                        @RestToPay,
-    //                        @Confirmation,
-    //                        @ConfirmationDate,
-    //                        @Annotation)";
-
-    //            SqlCommand command = new SqlCommand(sql, connection);
-
-    //            command.Parameters.Add(new SqlParameter("InquireDate", InquireDate));
-    //            command.Parameters.Add(new SqlParameter("FirstName", FirstName));
-    //            command.Parameters.Add(new SqlParameter("LastName", LastName));
-    //            command.Parameters.Add(new SqlParameter("Email", Email));
-    //            command.Parameters.Add(new SqlParameter("Arrival", Arrival));
-    //            command.Parameters.Add(new SqlParameter("Departure", Departure));
-    //            command.Parameters.Add(new SqlParameter("Days", Days));
-    //            command.Parameters.Add(new SqlParameter("Adults", Adults));
-    //            command.Parameters.Add(new SqlParameter("Children", Children));
-    //            command.Parameters.Add(new SqlParameter("Message", Message));
-    //            command.Parameters.Add(new SqlParameter("Apartment", Apartment));
-    //            command.Parameters.Add(new SqlParameter("PricePerDay", PricePerDay));
-    //            command.Parameters.Add(new SqlParameter("TotalPrice", TotalPrice));
-    //            command.Parameters.Add(new SqlParameter("Deposit", Deposit));
-    //            command.Parameters.Add(new SqlParameter("RestToPay", RestToPay));
-    //            command.Parameters.Add(new SqlParameter("Confirmation", Confirmation));
-    //            command.Parameters.Add(new SqlParameter("ConfirmationDate", ConfirmationDate));
-    //            command.Parameters.Add(new SqlParameter("Annotation", Annotation));
-
-    //            command.ExecuteNonQuery();
-
-    //            connection.Close();
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            return;
-    //        }
-
-    //    }
 
 }
