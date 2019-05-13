@@ -64,7 +64,7 @@
                     <li ng-if="islogin" ng-click="toggleTpl('invoices')"><a href="#">Računi</a></li>-->
                 </ul>
                 <ul ng-if="islogin" class="nav navbar-nav navbar-right">
-                    <li ng-click="logout()"><a href="#"><span class="fa fa-sign-in"></span> Odjava</a></li>
+                    <li ng-click="f.logout()"><a href="#"><span class="fa fa-sign-in"></span> Odjava</a></li>
                 </ul>
             </div>
         </div>
@@ -89,7 +89,7 @@
                             </div>
                         </form>
                         <div>
-                            <button type="submit" form="loginform" ng-click="login(u)" class="btn btn-primary pull-right" style="margin:5px 0px 0px 0px"><i class="fa fa-key"></i> Login</button>
+                            <button type="submit" form="loginform" ng-click="f.login(u)" class="btn btn-primary pull-right" style="margin:5px 0px 0px 0px"><i class="fa fa-key"></i> Login</button>
                         </div>
                     </fieldset>
                 </div>

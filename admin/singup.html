@@ -20,25 +20,25 @@
      <div id="divSingup" class="row">
          <div class="col-xs-12 col-sm-12 col-md-12">
              <div class="form-group">
-                 <input type="text" ng-model="user.firstName" class="form-control input-sm" placeholder="First Name"></div>
+                 <input type="text" ng-model="u.firstName" class="form-control input-sm" placeholder="First Name"></div>
          </div>
          <div class="col-xs-12 col-sm-12 col-md-12">
              <div class="form-group">
-                 <input type="text" ng-model="user.lastName" class="form-control input-sm" placeholder="Last Name"></div>
+                 <input type="text" ng-model="u.lastName" class="form-control input-sm" placeholder="Last Name"></div>
          </div>
           <div class="col-xs-12 col-sm-12 col-md-12">
              <div class="form-group">
-                 <input type="email" ng-model="user.email" class="form-control input-sm" placeholder="Email">
+                 <input type="email" ng-model="u.email" class="form-control input-sm" placeholder="Email">
              </div>
          </div>
          <div class="col-xs-12 col-sm-12 col-md-12">
              <div class="form-group">
-                 <input type="text" ng-model="user.userName" class="form-control input-sm" placeholder="User Name">
+                 <input type="text" ng-model="u.userName" class="form-control input-sm" placeholder="User Name">
              </div>
          </div>
          <div class="col-xs-12 col-sm-12 col-md-12">
              <div class="form-group">
-                 <input type="password" ng-model="user.password" class="form-control input-sm" placeholder="Password">
+                 <input type="password" ng-model="u.password" class="form-control input-sm" placeholder="Password">
              </div>
          </div>
           <div class="col-xs-12 col-sm-12 col-md-12">
@@ -47,8 +47,15 @@
              </div>
          </div>
      </div>
+
+     <div>
+         <input ng-model="accept" type="checkbox" />
+         I accept the 
+         <a href="../terms-of-service.html" title="uvjeti korištenja" target="_blank">uvjete korištenja</a>
+     </div>
+
     <div class="form-group">
-        <input type="button" ng-click="singup()" class="btn btn-default" value="Sing up" />
+        <input type="button" ng-click="f.signup(u, accept)" class="btn btn-default" value="Sing up" />
     </div>
     <div id="singupMessage" hidden="hidden" class="alert alert-danger">
         <strong>Error !</strong>  

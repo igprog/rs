@@ -6,7 +6,7 @@
     };
     $scope.toggleTpl('login');
 
-    $scope.init = function () {
+    var init = function () {
         $scope.islogin = false;
         $scope.u = [];
         sessionStorage.clear();
@@ -19,12 +19,12 @@
             $scope.u = JSON.parse(response.data.d);
         },
         function (response) {
-            alert(response.data.d)
+            alert(response.data.d);
         });
     }
-    $scope.init();
+    init();
 
-    $scope.login = function (u) {
+    var login = function (u) {
         sessionStorage.clear();
         $http({
             url: '../Users.asmx/Login',
@@ -32,7 +32,7 @@
             data: { userName: u.userName, password: u.password }
         })
         .then(function (response) {
-            if (JSON.parse(response.data.d).userName === $scope.u.userName) {
+            if (JSON.parse(response.data.d).userName === u.userName) {
                 $scope.u = JSON.parse(response.data.d);
                 sessionStorage.setItem("username", $scope.u.userName);
                 $scope.islogin = true;
@@ -40,23 +40,27 @@
                 $scope.toggleTpl('product');
                // window.location.href = "Products.aspx?uid=" + $scope.u.userId + "&type=" + $scope.user.adminType;
             } else {
-                alert("Error Login!")
+                alert("Error Login!");
             }
         },
         function (response) {
-            alert(response.data.d)
+            alert(response.data.d);
         });
     }
 
-    $scope.signup = function () {
-        if ($scope.u.password !== $scope.passwordConfirm) {
+    var signup = function (u, accept) {
+        if (u.password !== $scope.passwordConfirm) {
             alert("Password do not match.");
+            return false;
+        }
+        if (!accept) {
+            alert('confirm terms of service');
             return false;
         }
         $http({
             url: '../Users.asmx/Signup',
             method: "POST",
-            data: '{user:' + JSON.stringify($scope.user) + '}'
+            data: { user: u }
         })
         .then(function (response) {
             alert(response.data.d)
@@ -65,7 +69,6 @@
             alert(response.data.d)
         });
     }
-
 
     var getProductGroups = function (id) {
         $http({
@@ -182,6 +185,15 @@
     }
 
     $scope.f = {
+        login: (u) => {
+            return login(u);
+        },
+        logout: () => {
+            return init();
+        },
+        signup: (u, accept) => {
+            return signup(u, accept);
+        },
         getProducts: (id) => {
             return getProducts(id);
         },
@@ -203,7 +215,6 @@
     }
 
 })
-
 
 
 ;
