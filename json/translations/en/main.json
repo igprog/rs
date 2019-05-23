@@ -4,7 +4,7 @@
   "under construction": "Under construction",
   "contact": "Contact",
   "find out more": "Find out more",
-  "find closest accommodation, event or other services in split surrounding": "Find closest accommodation, event or other services in Split surrounding",
+  "sitedesc": "Find accommodation, transport, restaurants or other services in Split surrounding",
   "accommodation": "Accommodation",
   "transport": "Transport",
   "eating": "Eating",
@@ -18,7 +18,8 @@
   "distance_": "Distance",
   "price_": "Price",
   "city_": "City",
-  "title_":  "Title"
+  "title_": "Title",
+  "food and fun": "Food & Fun"
 
 
 }

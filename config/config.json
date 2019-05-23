@@ -14,8 +14,8 @@
   "phone": "+385 98 330 966",
   "copyright": "IG PROG",
   "language": {
-    "code": "hr",
-    "title": "hrvatski"
+    "code": "en",
+    "title": "english"
   },
   "languages": [
     {
@@ -28,8 +28,8 @@
     }
   ],
   "currency": {
-    "code": "hrk",
-    "symbol": "kn",
+    "code": "eur",
+    "symbol": "€",
     "course": 7.5
   },
   "currencies": [

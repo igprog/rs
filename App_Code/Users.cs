@@ -181,7 +181,7 @@ public class Users : System.Web.Services.WebService {
     public string Signup(NewUser user) {
         try {
             if (checkUser(user.email) == false) {
-                return ("The user is already registered.");
+                return JsonConvert.SerializeObject("The user is already registered.", Formatting.Indented);
             } else {
                 user.userId = Guid.NewGuid();
                 user.userGroupId = user.userId;
@@ -217,10 +217,10 @@ public class Users : System.Web.Services.WebService {
                 command.Parameters.Add(new SqlParameter("IPAddress", user.ipAddress));
                 command.ExecuteNonQuery();
                 connection.Close();
-                return ("Registration completed successfully.");
+                return JsonConvert.SerializeObject("Registration completed successfully.", Formatting.Indented);
             }
         } catch (Exception e) {
-            return ("Registration failed! (Error: )" + e.Message);
+            return JsonConvert.SerializeObject("Registration failed! (Error: )" + e.Message, Formatting.Indented);
         }
     }
 

@@ -4,7 +4,7 @@
   "Under construction": "Stranica je u izradi",
   "Contact": "Kontakt",
   "find out more": "Saznajte više",
-  "find closest accommodation, event or other services in split surrounding": "Pronađite najbliži smještaj, događanje ili drugu uslugu u Splitu i okolici",
+  "sitedesc": "Pronađite smještaj, transport, restoran ili drugu uslugu u Splitu i okolici",
   "accommodation": "Smještaj",
   "transport": "Transport",
   "eating": "Gastro",
@@ -18,6 +18,7 @@
   "distance_": "Udaljenosti",
   "price_": "Cijeni",
   "city_": "Gradu",
-  "title_": "Nazivu"
+  "title_": "Nazivu",
+  "food and fun": "Gastro & Zabava"
 
 }

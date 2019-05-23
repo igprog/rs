@@ -48,7 +48,7 @@
     };
     getConfig();
 
-    $scope.lang = 'hr';
+    $scope.lang = 'en';
     $scope.setLanguage = function (x) {
         $translate.use(x);
         $translatePartialLoader.addPart('main');

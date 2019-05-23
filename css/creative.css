@@ -23,11 +23,11 @@ a {
   -webkit-transition: all 0.35s;
   -moz-transition: all 0.35s;
   transition: all 0.35s;
-  color: #F05F40;
+  color: #15428c;
 }
 a:hover,
 a:focus {
-  color: #eb3812;
+  color: #fff;
 }
 h1,
 h2,
@@ -432,3 +432,23 @@ body {
     background-color:#fff !important;
     opacity:0.8 !important;
 }
+.well:hover,
+.well:focus {
+  background-color: #15428c !important;
+  color:#fff;
+}
+.btn-primary {
+    background-color: #15428c !important;
+}
+.bc-main {
+    background-color: #15428c !important;
+}
+h2 {
+    margin:0px;
+}
+@media (min-width: 768px) {
+    .navbar-default {
+        background-color: #15428c;
+    }
+}
+
