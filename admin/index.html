@@ -129,52 +129,52 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Naziv:</label>
-                                        <input ng-model="x.title" type="text" class="form-control">
+                                        <input ng-model="x.title" type="text" class="form-control" maxlength="30">
                                     </div>
                                     <div class="form-group">
                                         <label>Kratki opis</label>
-                                        <input ng-model="x.shortDescription" type="text" class="form-control">
+                                        <input ng-model="x.shortDescription" type="text" class="form-control" maxlength="50">
                                     </div>
                                     <div class="form-group">
                                         <label>Dugi opis</label>
-                                        <textarea ng-model="x.longDescription" rows="4" class="form-control"></textarea>
+                                        <textarea ng-model="x.longDescription" rows="4" class="form-control" maxlength="2000"></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label>Ulica i broj</label>
-                                        <input ng-model="x.address" type="text" class="form-control">
+                                        <input ng-model="x.address" type="text" class="form-control" maxlength="50">
                                     </div>
                                     <div class="form-group">
                                         <label>Poštanski broj</label>
-                                        <input ng-model="x.postalCode" type="text" class="form-control">
+                                        <input ng-model="x.postalCode" type="text" class="form-control" maxlength="50">
                                     </div>
                                     <div class="form-group">
                                         <label>Grad</label>
-                                        <input ng-model="x.city" type="text" class="form-control">
+                                        <input ng-model="x.city" type="text" class="form-control" maxlength="50">
                                     </div>
                                     <div class="form-group">
                                         <label>Telefon</label>
-                                        <input ng-model="x.phone" type="text" class="form-control">
+                                        <input ng-model="x.phone" type="text" class="form-control" maxlength="50">
                                     </div>
                                     <div class="form-group">
                                         <label>Email</label>
-                                        <input ng-model="x.email" type="email" class="form-control">
+                                        <input ng-model="x.email" type="email" class="form-control" maxlength="50">
                                     </div>
                                     <div class="form-group">
                                         <label>Web</label>
-                                        <input ng-model="x.web" type="text" class="form-control">
+                                        <input ng-model="x.web" type="text" class="form-control" maxlength="50">
                                     </div>
                                     <div class="form-group">
-                                        <label>Cijena</label>
-                                        <input ng-model="x.price" type="text" class="form-control">
+                                        <label>Cijena (€)</label>
+                                        <input ng-model="x.price" type="text" class="form-control" maxlength="50">
                                     </div>
-                                    <div class="form-group">
+                                    <!--<div class="form-group">
                                         <label>Latitude</label>
                                         <input ng-model="x.latitude" type="text" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>Longitude</label>
                                         <input ng-model="x.longitude" type="text" class="form-control">
-                                    </div>
+                                    </div>-->
                                     <div class="text-right">
                                         <button ng-click="f.save(x, u)" type="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Spremi</button>
                                     </div>
@@ -194,13 +194,14 @@
                                             </div>
                                         </div>
                                     </form>
-                                    <div>
-                                        <div class="row" style="margin-top:10px">
-                                            <div ng-repeat="y in x.gallery track by $index">
-                                                <div class="input-group mt-10">
-                                                    <img src="../upload/{{x.productId}}/gallery/{{y}}" alt="{{x.title}}" class="img-thumbnail" />
-                                                    <span ng-click="f.deleteImg(x, y)" class="btn btn-default input-group-addon" title="Briši"><i class="fa fa-times text-danger"></i></span>
-                                                </div>
+                                    <div class="mt-10">
+                                        <div ng-repeat="y in x.gallery track by $index" class="mt-20">
+                                            <div class="input-group mt-10">
+                                                <img src="../upload/{{x.productId}}/gallery/{{y}}" alt="{{x.title}}" class="img-thumbnail" />
+                                                <span ng-click="f.deleteImg(x, y)" class="btn btn-default input-group-addon" title="Briši"><i class="fa fa-times text-danger"></i></span>
+                                            </div>
+                                            <div class="mt-10">
+                                                <input id="{{y}}_{{x.productId}}" type="radio" name="mainimg_{{x.productId}}" ng-click="f.setMainImg(x, y)" value="{{y}}" /> <label for="{{y}}_{{x.productId}}" ng-click="f.setMainImg(x, y)">Postavi kao glavnu sliku</label>
                                             </div>
                                         </div>
                                     </div>

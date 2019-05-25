@@ -73,9 +73,9 @@
             </div>
             <div class="row">
                 <div class="col-sm-6">
-                    <img ng-if="p.gallery[0]" src="./upload/{{p.productId}}/gallery/{{p.gallery[0]}}" check-image alt="{{p.title}}" class="img-thumbnail" title="{{p.title}}" />
-                    <img ng-if="!p.gallery[0]" src="./img/default.png" alt="{{p.title}}" class="img-thumbnail" title="{{p.title}}" />
-
+                    <img ng-if="p.image" src="./upload/{{p.productId}}/gallery/{{p.image}}" check-image alt="{{p.title}}" class="img-thumbnail" title="{{p.title}}" />
+                    <img ng-if="!p.image&&p.gallery[0]" src="./upload/{{p.productId}}/gallery/{{p.gallery[0]}}" check-image alt="{{p.title}}" class="img-thumbnail" title="{{p.title}}" />
+                    <img ng-if="!p.image&&!p.gallery[0]" src="./img/default.png" alt="{{p.title}}" class="img-thumbnail" title="{{p.title}}" />
                 </div>
                 <div class="col-sm-6">
                     <h2>{{p.shortDescription}}</h2>
@@ -104,7 +104,7 @@
                     <label class="text-uppercase lead">{{'gallery' | translate}}</label>
                     <div class="row">
                         <div ng-if="$index>0" class="col-sm-6" ng-repeat="x in p.gallery">
-                            <img src="../upload/{{p.productId}}/gallery/{{x}}" alt="{{x.title}}" class="img-responsive m10" />
+                            <img src="../upload/{{p.productId}}/gallery/{{x}}" alt="{{x.title}}" class="img-responsive m-10" />
                         </div>
                     </div>
                 </div>

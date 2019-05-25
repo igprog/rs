@@ -56,8 +56,8 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                <li><a href="admin/signup.html"><i class="fa fa-sign-in"></i> {{ 'Sign Up' | translate }}</a></li>
-                <li><a href="admin/"><i class="fa fa-sign-out"></i> {{ 'Login' | translate }}</a></li>
+                    <li><a href="admin/signup.html"><i class="fa fa-sign-in"></i> {{ 'Sign Up' | translate }}</a></li>
+                    <li><a href="admin/"><i class="fa fa-sign-out"></i> {{ 'Login' | translate }}</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -67,12 +67,12 @@
 
     <header>
         <div class="text-left" style="margin:50px 0px 0px 20px">
-            <img src="img/map.png" class="img-circle" style="width:150px" />
+            <img src="img/map.png" class="img-circle" style="width:150px; cursor:pointer" data-toggle="modal" data-target="#myModal" />
         </div>
         <div class="header-content">
             <div class="header-content-inner">
                 <h1 id="homeHeading">Riviera Split</h1>
-                <h2 class="lead text-center pt3" style="font-weight:600; font-size:26px">{{'sitedesc' | translate}}</h2>
+                <h2 class="lead text-center pt3" style="font-weight:600; font-size:22px">{{'sitedesc' | translate}}</h2>
                 <div style="padding-top: 10px">
                     <input type="button" value="hr" class="btn btn-default" ng-click="setLanguage('hr')" />
                     <input type="button" value="en" class="btn btn-default" ng-click="setLanguage('en')" />
@@ -81,7 +81,7 @@
                 <div class="row mt-10 text-uppercase" style="color:lightskyblue">
                     <div class="col-sm-4">
                         <a href="#products" ng-click="filter('b8b3ae5d-cd80-416f-99a9-b79916820e97')" title="{{'search accommodation' | translate}}">
-                            <div class="well transparent">
+                            <div class="well transparent hover">
                                 <i class="fa fa-home fa-4x"></i>
                                 <h2>{{'accommodation' | translate}}</h2>
                             </div>
@@ -89,7 +89,7 @@
                     </div>
                     <div class="col-sm-4">
                         <a href="#products" ng-click="filter('26c0df2f-fdae-4680-9a68-4bdff4ea1d65')" title="{{'search transport' | translate}}">
-                            <div class="well transparent">
+                            <div class="well transparent hover">
                                 <i class="fa fa-car fa-4x"></i>
                                 <h2>{{'transport' | translate}}</h2>
                             </div>
@@ -97,7 +97,7 @@
                     </div>
                     <div class="col-sm-4">
                         <a href="#products" ng-click="filter('34b7dfb2-42a5-4edc-868d-88c91dcd3e68')" title="{{'search eating' | translate}}">
-                            <div class="well transparent">
+                            <div class="well transparent hover">
                                 <i class="fa fa-cutlery fa-4x"></i>
                                 <h2>{{'food and fun' | translate}}</h2>
                             </div>
@@ -119,11 +119,12 @@
         <!--<div style="padding:10px">
             <h2 class="lead text-center pt3">{{'find closest accommodation, transport, restaurants or other services in split surrounding' | translate}}.</h2>
         </div>-->
+
         <div class="row">
-            <div class="col-sm-2 p-30">
+            <div class="col-md-2 p-30">
                 <sort-directive></sort-directive>
             </div>
-            <div class="col-sm-10 p-30">
+            <div class="col-md-10 p-30">
                 <product-directive filtercategory="" products="products" filtervalue="filterValue" ordervalue="orderValue"></product-directive>
             </div>
         </div>
@@ -132,27 +133,32 @@
     <div class="text-right" style="margin:10px">
         <hr />
         <div class="text-right" style="padding:5px 10px 0px 0px">
-            <a href="https://www.igprog.hr" class="text-primary small" title="IG PROG, obrt za računalno programiranje">&copy {{today | date:'yyyy'}} {{config.copyright}}</a>
+            <a href="https://www.igprog.hr" class="text-primary small" title="IG PROG, obrt za računalno programiranje">Developed by {{config.copyright}}</a>
         </div>
     </div>
 
-      <!-- jQuery -->
-    <script src="vendor/jquery/jquery.min.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
-    <!-- Plugin JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
-    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 
-    <!-- Theme JavaScript -->
-    <script src="js/creative.min.js"></script>
+        <modal-directive img="'img/map.png'"></modal-directive>
 
-   
-    <script src="js/app.min.js"></script>
-    <script src="js/functions.js"></script>
+        <!-- jQuery -->
+        <script src="vendor/jquery/jquery.min.js"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+        <!-- Plugin JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+        <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
+        <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+        <!-- Theme JavaScript -->
+        <script src="js/creative.min.js"></script>
+
+
+        <script src="js/app.js"></script>
+        <script src="js/functions.js"></script>
 
 
 </body>

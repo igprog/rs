@@ -29,18 +29,23 @@ public class ProductGroups : System.Web.Services.WebService {
     [WebMethod]
     public string GetProductGroups() {
         try {
-            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-            connection.Open();
-            SqlCommand command = new SqlCommand("SELECT ProductGroupId, Title FROM ProductGroups", connection);
-            SqlDataReader reader = command.ExecuteReader();
             List<NewProductGroup> xx = new List<NewProductGroup>();
-            while (reader.Read()) {
-                NewProductGroup x = new NewProductGroup();
-                x.productGroupId = reader.GetGuid(0);
-                x.title = reader.GetValue(1) == DBNull.Value ? "" : reader.GetString(1);
-                xx.Add(x);
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString)) {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("SELECT ProductGroupId, Title FROM ProductGroups", connection)) {
+                    using (SqlDataReader reader = command.ExecuteReader()) {
+                        while (reader.Read()) {
+                            NewProductGroup x = new NewProductGroup();
+                            x.productGroupId = reader.GetGuid(0);
+                            x.title = reader.GetValue(1) == DBNull.Value ? "" : reader.GetString(1);
+                            if (!string.IsNullOrEmpty(x.title)) {
+                                xx.Add(x);
+                            }
+                        }
+                    }
+                }
+                connection.Close();
             }
-            connection.Close();
             return JsonConvert.SerializeObject(xx, Formatting.Indented);
         } catch (Exception e) {
             return e.Message;
@@ -48,8 +53,7 @@ public class ProductGroups : System.Web.Services.WebService {
     }
 
     [WebMethod]
-    public string GetProductGroupByProductGroupId(string productGroupId)
-    {
+    public string GetProductGroupByProductGroupId(string productGroupId) {
         SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
         connection.Open();
         SqlCommand command = new SqlCommand("SELECT ProductGroupId, Title FROM ProductGroups WHERE ProductGroupId = ProductGroupId ", connection);
@@ -57,12 +61,9 @@ public class ProductGroups : System.Web.Services.WebService {
         command.Parameters.Add(new SqlParameter("ProductId", productGroupId));
         SqlDataReader reader = command.ExecuteReader();
         List<NewProductGroup> products = new List<NewProductGroup>();
-        while (reader.Read())
-        {
-            if (productGroupId == reader.GetGuid(0).ToString())
-            {
-                NewProductGroup xx = new NewProductGroup()
-                {
+        while (reader.Read()) {
+            if (productGroupId == reader.GetGuid(0).ToString()) {
+                NewProductGroup xx = new NewProductGroup() {
                     productGroupId = reader.GetGuid(0),
                     title = reader.GetString(1),
                 };
@@ -70,11 +71,7 @@ public class ProductGroups : System.Web.Services.WebService {
             }
         }
         connection.Close();
-
-        string json = JsonConvert.SerializeObject(products, Formatting.Indented);
-        return json;
-        //CreateFolder("~/json/");
-        //WriteFile("~/json/products.json", json);
+        return JsonConvert.SerializeObject(products, Formatting.Indented);
     }
 
 

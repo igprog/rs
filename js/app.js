@@ -165,6 +165,16 @@
     };
 })
 
+.directive('modalDirective', function () {
+    return {
+        restrict: 'E',
+        scope: {
+            img: '='
+        },
+        templateUrl: 'partials/popup/modal.html'
+    };
+})
+
 .directive('checkImage', function ($http) {
     return {
         restrict: 'A',

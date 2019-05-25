@@ -1,6 +1,39 @@
 ﻿angular.module('admin', ['functions'])
 .controller('adminCtrl', ['$scope', '$http', 'functions', function ($scope, $http, functions) {
 
+    $scope.f = {
+        login: (u) => {
+            return login(u);
+        },
+        logout: () => {
+            return init();
+        },
+        signup: (u, accept) => {
+            return signup(u, accept);
+        },
+        getProducts: (id) => {
+            return getProducts(id);
+        },
+        save: (x, u) => {
+            return save(x, u)
+        },
+        upload: (x, idx) => {
+            return upload(x, idx);
+        },
+        deleteImg: (x, img) => {
+            return deleteImg(x, img);
+        },
+        newProduct: () => {
+            return newProduct();
+        },
+        deleteProduct: (x, u) => {
+            return deleteProduct(x, u);
+        },
+        setMainImg: (x, img) => {
+            return setMainImg(x, img);
+        }
+    }
+
 	var reloadPage = () => {
         if (typeof (Storage) !== 'undefined') {
             if (localStorage.version) {
@@ -108,52 +141,33 @@
     }
 
     var deleteImg = (x, img) => {
-        functions.post('Products', 'DeleteImg', { productId: x.productId, img: img }).then((d) => {
-            x.gallery = d;
-        });
+        if (confirm('Briši sliku ?')) {
+            functions.post('Products', 'DeleteImg', { productId: x.productId, img: img }).then((d) => {
+                x.gallery = d;
+            });
+        }
     }
 
     var newProduct = () => {
-        functions.post('Products', 'Init', { }).then((d) => {
+        functions.post('Products', 'Init', {}).then((d) => {
             $scope.p.push(d);
         });
     }
 
     var deleteProduct = (x, u) => {
-        functions.post('Products', 'Delete', { productId: x.productId }).then((d) => {
-            getProducts(u.userId);
+        if (confirm('Briši oglas ?')) {
+            functions.post('Products', 'Delete', { productId: x.productId }).then((d) => {
+                getProducts(u.userId);
+            });
+        }
+    }
+
+    var setMainImg = (x, img) => {
+        functions.post('Products', 'SetMainImg', { productId: x.productId, img: img }).then((d) => {
+            x.image = img;
         });
     }
 
-    $scope.f = {
-        login: (u) => {
-            return login(u);
-        },
-        logout: () => {
-            return init();
-        },
-        signup: (u, accept) => {
-            return signup(u, accept);
-        },
-        getProducts: (id) => {
-            return getProducts(id);
-        },
-        save: (x, u) => {
-            return save(x, u)
-        },
-        upload: (x, idx) => {
-            return upload(x, idx);
-        },
-        deleteImg: (x, img) => {
-            return deleteImg(x, img);
-        },
-        newProduct: () => {
-            return newProduct();
-        },
-        deleteProduct: (x, u) => {
-            return deleteProduct(x, u);
-        }
-    }
 
 }])
 

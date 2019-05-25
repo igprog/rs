@@ -10,7 +10,7 @@
         <select class="form-control" ng-model="cityOption" ng-change="filter(cityOption)">
             <option disabled="disabled" ng-selected="true" value="">{{'filter by town' | translate}}...</option>
             <option value="">{{'all towns' | translate}}</option>
-            <option ng-repeat="x in cities" value="{{x.City}}">{{x.City}}</option>
+            <option ng-repeat="x in cities" value="{{x.city}}">{{x.city}}</option>
         </select>
     </div>
     <div class="mt-10">

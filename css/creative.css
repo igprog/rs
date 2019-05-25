@@ -27,7 +27,7 @@ a {
 }
 a:hover,
 a:focus {
-  color: #fff;
+  color: #eb3812;
 }
 h1,
 h2,
@@ -419,8 +419,11 @@ body {
 .m-10 {
     margin:10px;
 }
-.mt-10{
+.mt-10 {
     margin-top:10px;
+}
+.mt-20 {
+    margin-top:20px;
 }
 .p-30 {
     padding:30px;
@@ -432,8 +435,8 @@ body {
     background-color:#fff !important;
     opacity:0.8 !important;
 }
-.well:hover,
-.well:focus {
+.hover:hover,
+.hover:focus {
   background-color: #15428c !important;
   color:#fff;
 }

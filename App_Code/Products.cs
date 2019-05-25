@@ -46,6 +46,10 @@ public class Products : System.Web.Services.WebService {
         public string[] gallery;
     }
 
+    public class City {
+        public string city;
+    }
+
      [WebMethod]
     public string Init() {
         try {
@@ -274,21 +278,27 @@ public class Products : System.Web.Services.WebService {
 
     [WebMethod]
     public string GetCities() {
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        connection.Open();
-        SqlCommand command = new SqlCommand("SELECT DISTINCT City FROM Products", connection);
-        SqlDataReader reader = command.ExecuteReader();
-        string json = "";
-        string comma = "";
-        while (reader.Read()) {
-            if (json == "") { comma = ""; } else { comma = ","; }
-            json = json + comma + "{'City':'" +
-                (reader.GetValue(0) == DBNull.Value ? "" : reader.GetString(0)).ToString()
-                + "'}";
+        try {
+            List<City> xx = new List<City>();
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString)) {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("SELECT DISTINCT City FROM Products", connection)) {
+                    using (SqlDataReader reader = command.ExecuteReader()) {
+                        while (reader.Read()) {
+                            City x = new City();
+                            x.city = reader.GetValue(0) == DBNull.Value ? "" : reader.GetString(0);
+                            if (!string.IsNullOrEmpty(x.city)) {
+                                xx.Add(x);
+                            }
+                        }
+                    }
+                }
+                connection.Close();
+                return JsonConvert.SerializeObject(xx, Formatting.Indented);
+            }
+        } catch (Exception e) {
+            return JsonConvert.SerializeObject(e.Message, Formatting.Indented);
         }
-        json = ("[" + json + "]").Replace("'", "\"");
-        connection.Close();
-        return json; 
     }
 
     [WebMethod]
@@ -309,13 +319,6 @@ public class Products : System.Web.Services.WebService {
         }
     }
 
-    public void DeleteProductFolder(Guid? productId) {
-        string path = Server.MapPath(string.Format("~/upload/{0}/", productId.ToString()));
-        if (Directory.Exists(path)) {
-            Directory.Delete(path, true);
-        }
-    }
-
     [WebMethod]
     public string LoadProductGallery(Guid? productId) {
         try {
@@ -323,6 +326,23 @@ public class Products : System.Web.Services.WebService {
             return JsonConvert.SerializeObject(x, Formatting.Indented);
         } catch(Exception e) {
             return null;
+        }
+    }
+
+    [WebMethod]
+    public string SetMainImg(Guid? productId, string img) {
+        try {
+            string sql = string.Format("UPDATE Products SET [Image] = '{0}' WHERE [ProductId] = '{1}'", img, productId);
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString)) {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(sql, connection)) {
+                    command.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+            return JsonConvert.SerializeObject("OK", Formatting.Indented);
+        } catch (Exception e) {
+            return JsonConvert.SerializeObject(string.Format(@"Error! Product not updated. ({0})", e.Message), Formatting.Indented);
         }
     }
 
@@ -349,6 +369,13 @@ public class Products : System.Web.Services.WebService {
         x.displayType = reader.GetValue(18) == DBNull.Value ? 0 : reader.GetInt32(18);
         x.gallery = GetGallery(x.productId);
         return x;
+    }
+
+    public void DeleteProductFolder(Guid? productId) {
+        string path = Server.MapPath(string.Format("~/upload/{0}/", productId.ToString()));
+        if (Directory.Exists(path)) {
+            Directory.Delete(path, true);
+        }
     }
 
     string[] GetGallery(Guid? productId) {
