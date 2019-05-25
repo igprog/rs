@@ -217,6 +217,7 @@ public class Users : System.Web.Services.WebService {
                 command.Parameters.Add(new SqlParameter("IPAddress", user.ipAddress));
                 command.ExecuteNonQuery();
                 connection.Close();
+                SendMail(user);
                 return JsonConvert.SerializeObject("Registration completed successfully.", Formatting.Indented);
             }
         } catch (Exception e) {
@@ -225,27 +226,65 @@ public class Users : System.Web.Services.WebService {
     }
 
     protected bool checkUser(string email) {
-            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-            connection.Open();
-            SqlCommand command = new SqlCommand(
-                "SELECT Email FROM Users WHERE Email = @Email ", connection);
+        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+        connection.Open();
+        SqlCommand command = new SqlCommand(
+            "SELECT Email FROM Users WHERE Email = @Email ", connection);
 
-            command.Parameters.Add(new SqlParameter("Email", email));
+        command.Parameters.Add(new SqlParameter("Email", email));
 
-            string userEmail = "";
-            SqlDataReader reader = command.ExecuteReader();
-            while (reader.Read()) {
-                userEmail = reader.GetString(0);
-            }
-            connection.Close();
-
-            if (userEmail == email) {
-                return false;
-            }
-            return true;
+        string userEmail = "";
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read()) {
+            userEmail = reader.GetString(0);
         }
+        connection.Close();
+
+        if (userEmail == email) {
+            return false;
+        }
+        return true;
+    }
+
+
+    private void SendMail(NewUser x) {
+        Mail mail = new Mail();
+        /*
+        string messageSubject = t.Tran("nutrition program", lang).ToUpper() + " - " + t.Tran("registration", lang);
+
+        string messageBody = string.Format(
+                @"
+<p>{0}</p>
+<p>{1}</p>
+<br />
+<p><i>{2}:</i></p>
+<hr/>
+<p>{3}: <strong>{4}</strong></p>
+<p>{5}: <strong>{6}</strong></p>
+<p>{7}: {8}</p>
+<p>({9})</p>
+<hr/>
+{10}
+<br />
+<br />"
+, t.Tran("nutrition program", lang).ToUpper()
+, t.Tran("registration completed successfully", lang).ToUpper()
+, t.Tran("login details", lang)
+, t.Tran("user name", lang)
+, x.userName
+, t.Tran("password", lang)
+, Decrypt(x.password)
+, t.Tran("app access link", lang)
+, string.Format("<a href='https://www.{0}/app'>https://www.{0}/app</a>", GetWebPage(lang))
+, string.Format(@"<i>{0}</i>", t.Tran("for a better experience in using the application, please use some of the modern browsers such as google chrome, mozilla firefox, microsoft edge etc.", lang))
+, string.Format(@"<i>* {0}</i>", t.Tran("this is an automatically generated email – please do not reply to it", lang)));
+*/
+     
+        //TODO:
+      //  mail.SendMail(x.email, messageSubject, messageBody, lang, null, false);
+    }
 
 
 
-    
+
 }
