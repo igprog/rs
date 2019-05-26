@@ -89,22 +89,22 @@
                             </div>
                         </form>
                         <div>
-                            <button type="submit" form="loginform" ng-click="f.login(u)" class="btn btn-primary pull-right" style="margin:5px 0px 0px 0px"><i class="fa fa-key"></i> Login</button>
+                            <button type="submit" form="loginform" ng-click="f.login(u)" class="btn btn-primary pull-right" style="margin:5px 0px 0px 0px"><i class="fa fa-key"></i> Prijava</button>
                         </div>
                     </fieldset>
+                </div>
+                <div class="col-sm-8 text-right">
+                    <a href="signup.html" class="btn btn-default"><span class="fa fa-sign-out"></span> Registracija</a>
                 </div>
             </div>
         </div>
     </script>
 
     <script type="text/ng-template" id="product">
-        <div class="container" style="padding-bottom:40px">
+        <div ng-if="islogin" class="container" style="padding-bottom:40px">
             <div>
                 <h2>Oglasi</h2>
             </div>
-
-            <!--<button class="btn btn-primary" ng-click="f.getProducts(u.userId)">Load</button>-->
-
             <div ng-repeat="x in p" class="mt-10">
                 <div class="panel panel-success">
                     <div class="panel-heading">

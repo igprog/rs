@@ -6,7 +6,7 @@
             return login(u);
         },
         logout: () => {
-            return init();
+            return logout();
         },
         signup: (u, accept) => {
             return signup(u, accept);
@@ -63,6 +63,7 @@
     var init = () => {
         $scope.islogin = false;
         $scope.u = [];
+        $scope.p = [];
         sessionStorage.clear();
         functions.post('Users', 'Init', {}).then((d) => {
             $scope.u = d;
@@ -79,11 +80,15 @@
                 $scope.islogin = true;
                 getProducts($scope.u.userId);
                 $scope.toggleTpl('product');
-                // window.location.href = "Products.aspx?uid=" + $scope.u.userId + "&type=" + $scope.user.adminType;
             } else {
                 alert("Error Login!");
             }
         });
+    }
+
+    var logout = () => {
+        init();
+        $scope.toggleTpl('login');
     }
 
     var signup = (u, accept) => {
@@ -96,7 +101,8 @@
             return false;
         }
         functions.post('Users', 'Signup', { user: u }).then((d) => {
-           alert(d);
+            alert(d);
+            window.open('./');
         });
     }
 

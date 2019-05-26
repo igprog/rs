@@ -15,7 +15,8 @@ using Newtonsoft.Json;
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
 [System.Web.Script.Services.ScriptService]
 public class Users : System.Web.Services.WebService {
-
+    string connectionString = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
+    string EncryptionKey = ConfigurationManager.AppSettings["EncryptionKey"];
     public Users () {
     }
 
@@ -69,7 +70,7 @@ public class Users : System.Web.Services.WebService {
     [WebMethod]
     public string Login(string userName, string password) {
         try {
-            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             SqlCommand command = new SqlCommand(
                   "SELECT UserId, UserType, FirstName, LastName, CompanyName, Address, PostalCode, City, Country, Pin, Email, UserName, Password, AdminType, UserGroupId, ActivationDate, ExpirationDate, IsActive, IPAddress FROM Users WHERE UserName = @UserName AND Password = @Password ", connection);
@@ -107,7 +108,7 @@ public class Users : System.Web.Services.WebService {
     }
 
     public NewUser CheckUser(string userName, string password) {
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+        SqlConnection connection = new SqlConnection(connectionString);
         connection.Open();
         SqlCommand command = new SqlCommand(
               "SELECT UserId, UserType, FirstName, LastName, CompanyName, Address, PostalCode, City, Country, Pin, Email, UserName, Password, AdminType, UserGroupId, ActivationDate, ExpirationDate, IsActive, IPAddress FROM Users WHERE UserName = @UserName AND Password = @Password ", connection);
@@ -142,7 +143,6 @@ public class Users : System.Web.Services.WebService {
     }
 
     protected string Encrypt(string clearText) {
-        string EncryptionKey = "MDOLD54FLSK5123";  // "MAKV2SPBNI99212";
         byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
         using (Aes encryptor = Aes.Create()) {
             Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
@@ -160,7 +160,6 @@ public class Users : System.Web.Services.WebService {
     }
 
     protected string Decrypt(string cipherText) {
-        string EncryptionKey = "MDOLD54FLSK5123";  // "MAKV2SPBNI99212";
         byte[] cipherBytes = Convert.FromBase64String(cipherText);
         using (Aes encryptor = Aes.Create()) {
             Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
@@ -189,7 +188,7 @@ public class Users : System.Web.Services.WebService {
                 user.activationDate = DateTime.Now;
                 user.expirationDate = user.activationDate;
 
-                SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+                SqlConnection connection = new SqlConnection(connectionString);
                 connection.Open();
 
                 string sql = @"INSERT INTO Users VALUES  
@@ -226,32 +225,29 @@ public class Users : System.Web.Services.WebService {
     }
 
     protected bool checkUser(string email) {
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        connection.Open();
-        SqlCommand command = new SqlCommand(
-            "SELECT Email FROM Users WHERE Email = @Email ", connection);
-
-        command.Parameters.Add(new SqlParameter("Email", email));
-
+        string sql = string.Format("SELECT Email FROM Users WHERE Email = '{0}'", email);
         string userEmail = "";
-        SqlDataReader reader = command.ExecuteReader();
-        while (reader.Read()) {
-            userEmail = reader.GetString(0);
+        using (SqlConnection connection = new SqlConnection(connectionString)) {
+            connection.Open();
+            using (SqlCommand command = new SqlCommand(sql, connection)) {
+                using (SqlDataReader reader = command.ExecuteReader()) {
+                    while (reader.Read()) {
+                        userEmail = reader.GetString(0);
+                    }
+                } 
+            }
+            connection.Close();
         }
-        connection.Close();
-
-        if (userEmail == email) {
+        if (userEmail.ToLower() == email.ToLower()) {
             return false;
+        } else {
+            return true;
         }
-        return true;
     }
-
 
     private void SendMail(NewUser x) {
         Mail mail = new Mail();
-        /*
-        string messageSubject = t.Tran("nutrition program", lang).ToUpper() + " - " + t.Tran("registration", lang);
-
+        string messageSubject = "Riviera Split - Registracija";
         string messageBody = string.Format(
                 @"
 <p>{0}</p>
@@ -262,26 +258,22 @@ public class Users : System.Web.Services.WebService {
 <p>{3}: <strong>{4}</strong></p>
 <p>{5}: <strong>{6}</strong></p>
 <p>{7}: {8}</p>
-<p>({9})</p>
 <hr/>
-{10}
+{9}
 <br />
 <br />"
-, t.Tran("nutrition program", lang).ToUpper()
-, t.Tran("registration completed successfully", lang).ToUpper()
-, t.Tran("login details", lang)
-, t.Tran("user name", lang)
+, "Riviera Split".ToUpper()
+, "Registracija uspješno završena".ToUpper()
+, "Podaci za prijavu"
+, "Korisničko ime"
 , x.userName
-, t.Tran("password", lang)
+, "Lozinka"
 , Decrypt(x.password)
-, t.Tran("app access link", lang)
-, string.Format("<a href='https://www.{0}/app'>https://www.{0}/app</a>", GetWebPage(lang))
-, string.Format(@"<i>{0}</i>", t.Tran("for a better experience in using the application, please use some of the modern browsers such as google chrome, mozilla firefox, microsoft edge etc.", lang))
-, string.Format(@"<i>* {0}</i>", t.Tran("this is an automatically generated email – please do not reply to it", lang)));
-*/
-     
-        //TODO:
-      //  mail.SendMail(x.email, messageSubject, messageBody, lang, null, false);
+, "Link za pristup administraciji"
+, "<a href='https://www.rivierasplit.com/admin'>https://www.rivierasplit.com/admin</a>"
+, string.Format(@"<i>* {0}</i>", "Ovo je automatski generirana poruka - molimo ne odgovarajte na nju."));
+
+        mail.SendMail(x.email, messageSubject, messageBody, null, true);
     }
 
 

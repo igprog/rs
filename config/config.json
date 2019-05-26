@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.0.0",
+  "version": "1.0.1",
   "backend": "",
   "appname": "rivierasplit.com",
   "debug": true,
@@ -9,8 +9,8 @@
   "company": "",
   "address": "",
   "oib": 0,
-  "email": "igprog@yahoo.com",
-  "emailcc": [ "program.prehrane@yahoo.com", "igprog@yahoo.com" ],
+  "email": "info@rivierasplit.com",
+  "emailcc": [ "igprog@yahoo.com" ],
   "phone": "+385 98 330 966",
   "copyright": "IG PROG",
   "language": {
