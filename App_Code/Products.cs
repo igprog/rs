@@ -18,6 +18,7 @@ using System.IO;
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
 [System.Web.Script.Services.ScriptService]
 public class Products : System.Web.Services.WebService {
+    string connectionString = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
 
     public Products () {
        
@@ -51,29 +52,34 @@ public class Products : System.Web.Services.WebService {
     }
 
      [WebMethod]
-    public string Init() {
+    public string Init(Guid? userId) {
         try {
-            NewProduct x = new NewProduct();
-            x.productId = null;
-            x.productGroup = null;
-            x.productOwner = null;
-            x.title = "";
-            x.shortDescription = "";
-            x.longDescription = "";
-            x.address = "";
-            x.postalCode = "";
-            x.city = "";
-            x.phone = "";
-            x.email = "";
-            x.web = "";
-            x.price = "";
-            x.latitude = 0;
-            x.longitude = 0;
-            x.image = "";
-            x.dateModified = new DateTime();
-            x.isActive = 1;
-            x.displayType = 0;
-            return JsonConvert.SerializeObject(x, Formatting.Indented);
+            if (CheckProductsLimit(userId)) {
+                NewProduct x = new NewProduct();
+                x.productId = null;
+                x.productGroup = null;
+                x.productOwner = null;
+                x.title = "";
+                x.shortDescription = "";
+                x.longDescription = "";
+                x.address = "";
+                x.postalCode = "";
+                x.city = "";
+                x.phone = "";
+                x.email = "";
+                x.web = "";
+                x.price = "";
+                x.latitude = 0;
+                x.longitude = 0;
+                x.image = "";
+                x.dateModified = new DateTime();
+                x.isActive = 1;
+                x.displayType = 0;
+                return JsonConvert.SerializeObject(x, Formatting.Indented);
+            } else {
+                return JsonConvert.SerializeObject("product limit exceeded", Formatting.Indented);
+            }
+                
         } catch (Exception e) {
             return e.Message;
         }
@@ -82,7 +88,7 @@ public class Products : System.Web.Services.WebService {
     [WebMethod]
     public string GetAllProducts() {
         try {
-            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             SqlCommand command = new SqlCommand("SELECT ProductId, ProductGroup, ProductOwner, Title, ShortDescription, LongDescription, Address, PostalCode, City, Phone, Email, Web, Price, Latitude, Longitude, Image, DateModified, IsActive, DisplayType FROM Products", connection);
             SqlDataReader reader = command.ExecuteReader();
@@ -102,7 +108,7 @@ public class Products : System.Web.Services.WebService {
     [WebMethod]
     public string GetAllProductsByUserId(Guid userId) {
         try {
-            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             SqlCommand command = new SqlCommand("SELECT ProductId, ProductGroup, ProductOwner, Title, ShortDescription, LongDescription, Address, PostalCode, City, Phone, Email, Web, Price, Latitude, Longitude, Image, DateModified, IsActive, DisplayType FROM Products WHERE @ProductOwner = ProductOwner", connection);
             command.Parameters.Add(new SqlParameter("ProductOwner", userId));
@@ -122,7 +128,7 @@ public class Products : System.Web.Services.WebService {
     [WebMethod]
     public string GetProductByProductId(string productId) {
         try {
-            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sql = string.Format(@"SELECT ProductId, ProductGroup, ProductOwner, Title, ShortDescription, LongDescription, Address, PostalCode, City, Phone, Email, Web, Price, Latitude, Longitude, Image, DateModified, IsActive, DisplayType FROM Products WHERE ProductId = '{0}'", productId);
             SqlCommand command = new SqlCommand(sql, connection);
@@ -142,7 +148,7 @@ public class Products : System.Web.Services.WebService {
     [WebMethod]
     public string GetProductsByDisplayType(int displayType) {
         try {
-            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             SqlCommand command = new SqlCommand("SELECT ProductId, ProductGroup, ProductOwner, Title, ShortDescription, LongDescription, Address, PostalCode, City, Phone, Email, Web, Price, Latitude, Longitude, Image, DateModified, IsActive, DisplayType FROM Products WHERE @DisplayType = DisplayType", connection);
             command.Parameters.Add(new SqlParameter("DisplayType", displayType));
@@ -161,7 +167,7 @@ public class Products : System.Web.Services.WebService {
 
     [WebMethod]
     public string SaveProduct(NewProduct product, Users.NewUser user) {
-        if(product.productId == null) {
+        if (product.productId == null) {
             return Save(product, user);
         } else {
             return Update(product);
@@ -173,7 +179,7 @@ public class Products : System.Web.Services.WebService {
         try {
             product.productId = Guid.NewGuid();
             product.productOwner = user.userId;
-            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sql = @"INSERT INTO Products VALUES
                         (@ProductId, @ProductGroup, @ProductOwner, @Title, @ShortDescription, @LongDescription, @Address, @PostalCode, @City, @Phone, @Email, @Web, @Price, @Latitude, @Longitude, @Image, @DateModified, @IsActive, @DisplayType)";
@@ -200,15 +206,14 @@ public class Products : System.Web.Services.WebService {
             command.ExecuteNonQuery();
             connection.Close();
             return JsonConvert.SerializeObject(product, Formatting.Indented);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return string.Format(@"Error! Product not saved. ({0})", e.Message);
         }
     }
 
     [WebMethod]
     public string Update(NewProduct product) {
-        SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+        SqlConnection connection = new SqlConnection(connectionString);
         connection.Open();
         try { 
              string sql = @"
@@ -263,7 +268,7 @@ public class Products : System.Web.Services.WebService {
     [WebMethod]
     public string Delete(Guid? productId) {
         try {
-            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sql = string.Format(@"DELETE FROM Products WHERE [ProductId] = '{0}'", productId.ToString());
             SqlCommand command = new SqlCommand(sql, connection);
@@ -280,7 +285,7 @@ public class Products : System.Web.Services.WebService {
     public string GetCities() {
         try {
             List<City> xx = new List<City>();
-            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString)) {
+            using (SqlConnection connection = new SqlConnection(connectionString)) {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand("SELECT DISTINCT City FROM Products", connection)) {
                     using (SqlDataReader reader = command.ExecuteReader()) {
@@ -333,7 +338,7 @@ public class Products : System.Web.Services.WebService {
     public string SetMainImg(Guid? productId, string img) {
         try {
             string sql = string.Format("UPDATE Products SET [Image] = '{0}' WHERE [ProductId] = '{1}'", img, productId);
-            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString)) {
+            using (SqlConnection connection = new SqlConnection(connectionString)) {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(sql, connection)) {
                     command.ExecuteNonQuery();
@@ -386,6 +391,25 @@ public class Products : System.Web.Services.WebService {
             xx = ss.Select(a => Path.GetFileName(a)).ToArray();
         }
         return xx;
+    }
+
+    private bool CheckProductsLimit(Guid? userId) {
+        int count = 0;
+        int productsLimit = Convert.ToInt32(ConfigurationManager.AppSettings["productsLimit"]);
+        string sql = string.Format(@"SELECT COUNT(ProductId) FROM Products WHERE ProductOwner = '{0}'", userId);
+        using (SqlConnection connection = new SqlConnection(connectionString)) {
+            connection.Open();
+            using (SqlCommand command = new SqlCommand(sql, connection)) {
+                SqlDataReader reader = command.ExecuteReader();
+                NewProduct x = new NewProduct();
+                while (reader.Read()) {
+                    count = reader.GetValue(0) == DBNull.Value ? 0 : reader.GetInt32(0);
+                }
+                reader.Close();
+            }
+            connection.Close();
+        }
+        return count < productsLimit ? true :false;
     }
 
 }

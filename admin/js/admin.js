@@ -23,8 +23,8 @@
         deleteImg: (x, img) => {
             return deleteImg(x, img);
         },
-        newProduct: () => {
-            return newProduct();
+        newProduct: (id) => {
+            return newProduct(id);
         },
         deleteProduct: (x, u) => {
             return deleteProduct(x, u);
@@ -154,9 +154,14 @@
         }
     }
 
-    var newProduct = () => {
-        functions.post('Products', 'Init', {}).then((d) => {
-            $scope.p.push(d);
+    var newProduct = (id) => {
+        functions.post('Products', 'Init', { userId: id }).then((d) => {
+            debugger;
+            if (d === 'product limit exceeded') {
+                alert(d);
+            } else {
+                $scope.p.push(d);
+            }
         });
     }
 

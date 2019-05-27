@@ -4,6 +4,9 @@ using System;
 using System.Web;
 using System.IO;
 
+using System.Linq;
+using System.Configuration;
+
 public class UploadHandler : IHttpHandler {
 
     public void ProcessRequest (HttpContext context) {
@@ -19,8 +22,12 @@ public class UploadHandler : IHttpHandler {
                     if (!Directory.Exists(folderPath)) {
                         Directory.CreateDirectory(folderPath);
                     }
-                    file.SaveAs(fname);
-                    context.Response.Write(imgId);
+                    if (CheckGalleryLimit(folderPath)) {
+                        file.SaveAs(fname);
+                        context.Response.Write(imgId);
+                    } else {
+                        context.Response.Write("product limit exceeded");  //TODO
+                    }
                 } else {
                     context.Response.Write("please choose a file to upload");
                 }
@@ -32,6 +39,16 @@ public class UploadHandler : IHttpHandler {
         get {
             return false;
         }
+    }
+
+    private bool CheckGalleryLimit(string path) {
+        int count = 0;
+        int productsLimit = Convert.ToInt32(ConfigurationManager.AppSettings["galleryLimit"]);
+        if (Directory.Exists(path)) {
+            string[] ss = Directory.GetFiles(path);
+            count = ss.Count();
+        }
+        return count <= productsLimit ? true : false;
     }
 
 }
