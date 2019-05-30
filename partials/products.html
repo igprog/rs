@@ -1,12 +1,12 @@
 ﻿<div class="row">
-   <div class="col-md-3" ng-repeat="x in products | filter:{ ProductGroup: filtercategory } | filter:filtervalue | orderBy:ordervalue">
+   <div class="col-md-4" ng-repeat="x in products | filter:{ ProductGroup: filtercategory } | filter:filtervalue | orderBy:ordervalue">
     <div class="booking-item booking-item-small well" style="min-height:230px">
         <div class="row">
             <div class="col-xs-6">
                 <a href="product.html?id={{x.productId}}&lang={{lang}}">
-                    <img ng-if="x.image" src="./upload/{{x.productId}}/gallery/{{x.image}}" check-image alt="{{x.title}}" class="img-thumbnail" title="{{x.title}}" />
-                    <img ng-if="!x.image&&x.gallery[0]" src="./upload/{{x.productId}}/gallery/{{x.gallery[0]}}" check-image alt="{{x.title}}" class="img-thumbnail" title="{{x.title}}" />
-                    <img ng-if="x.image&&!x.gallery[0]" src="./img/default.png" alt="{{x.title}}" class="img-thumbnail" title="{{x.title}}" />
+                    <img ng-if="x.image" src="./upload/{{x.productId}}/gallery/{{x.image}}" check-image alt="{{x.title}}" class="img-thumbnail" title="{{x.title}}" style="padding:0px" />
+                    <img ng-if="!x.image&&x.gallery[0]" src="./upload/{{x.productId}}/gallery/{{x.gallery[0]}}" check-image alt="{{x.title}}" class="img-thumbnail" title="{{x.title}}" style="padding:0px" />
+                    <img ng-if="x.image&&!x.gallery[0]" src="./img/default.png" alt="{{x.title}}" class="img-thumbnail" title="{{x.title}}" style="padding:0px" />
                 </a>
             </div>
             <div class="col-xs-6">

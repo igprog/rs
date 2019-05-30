@@ -40,49 +40,48 @@
 
 <body id="page-top" ng-app="app" ng-controller="appCtrl" ng-cloak>
 
- <!-- <div ui-view></div>-->
-
-
   <nav id="mainNav" class="navbar navbar-default navbar-fixed-top" style="color:black">
         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand page-scroll" href="index.html">Riviera Split</a>
             </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="admin/signup.html"><i class="fa fa-sign-in"></i> {{ 'Sign Up' | translate }}</a></li>
                     <li><a href="admin/"><i class="fa fa-sign-out"></i> {{ 'Login' | translate }}</a></li>
                 </ul>
             </div>
-            <!-- /.navbar-collapse -->
         </div>
-        <!-- /.container-fluid -->
     </nav>
 
     <header>
-        <div class="text-left" style="margin:50px 0px 0px 20px">
-            <img src="img/map.png" class="img-circle" style="width:150px; cursor:pointer" data-toggle="modal" data-target="#myModal" />
-        </div>
         <div class="header-content">
+            <div class="row" style="margin:55px 0px 0px 20px">
+                <div class="col-xs-6 text-left">
+                    <div>
+                        <img src="img/map.png" class="img-circle" style="width:150px; cursor:pointer;" data-toggle="modal" data-target="#myModal" />
+                    </div>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <input type="button" value="hr" class="btn btn-default" ng-click="setLanguage('hr')" />
+                    <input type="button" value="en" class="btn btn-default" ng-click="setLanguage('en')" />
+                </div>
+            </div>
             <div class="header-content-inner">
                 <h1 id="homeHeading">Riviera Split</h1>
                 <h2 class="lead text-center pt3" style="font-weight:600; font-size:22px">{{'sitedesc' | translate}}</h2>
-                <div style="padding-top: 10px">
+                <!--<div>
                     <input type="button" value="hr" class="btn btn-default" ng-click="setLanguage('hr')" />
                     <input type="button" value="en" class="btn btn-default" ng-click="setLanguage('en')" />
-                    <!--<input type="button" value="de" class="btn btn-default" ng-click="setLanguage('de')" />-->
-                </div>
+                </div>-->
                 <div class="row mt-10 text-uppercase" style="color:lightskyblue">
                     <div class="col-sm-4">
                         <a href="#products" ng-click="filter('b8b3ae5d-cd80-416f-99a9-b79916820e97')" title="{{'search accommodation' | translate}}">
                             <div class="well transparent hover">
-                                <i class="fa fa-home fa-4x"></i>
+                                <i class="fa fa-home fa-3x"></i>
                                 <h2>{{'accommodation' | translate}}</h2>
                             </div>
                         </a>
@@ -90,7 +89,7 @@
                     <div class="col-sm-4">
                         <a href="#products" ng-click="filter('26c0df2f-fdae-4680-9a68-4bdff4ea1d65')" title="{{'search transport' | translate}}">
                             <div class="well transparent hover">
-                                <i class="fa fa-car fa-4x"></i>
+                                <i class="fa fa-car fa-3x"></i>
                                 <h2>{{'transport' | translate}}</h2>
                             </div>
                         </a>
@@ -98,7 +97,7 @@
                     <div class="col-sm-4">
                         <a href="#products" ng-click="filter('34b7dfb2-42a5-4edc-868d-88c91dcd3e68')" title="{{'search eating' | translate}}">
                             <div class="well transparent hover">
-                                <i class="fa fa-cutlery fa-4x"></i>
+                                <i class="fa fa-cutlery fa-3x"></i>
                                 <h2>{{'food and fun' | translate}}</h2>
                             </div>
                         </a>
@@ -114,31 +113,23 @@
         </div>
     </header>
 
-    <!-- booking section -->
     <div id="products">
-        <!--<div style="padding:10px">
-            <h2 class="lead text-center pt3">{{'find closest accommodation, transport, restaurants or other services in split surrounding' | translate}}.</h2>
-        </div>-->
-
         <div class="row">
-            <div class="col-md-2 p-30">
+            <div class="col-md-3 p-30">
                 <sort-directive></sort-directive>
             </div>
-            <div class="col-md-10 p-30">
+            <div class="col-md-9 p-30">
                 <product-directive filtercategory="" products="products" filtervalue="filterValue" ordervalue="orderValue"></product-directive>
             </div>
         </div>
     </div>
-
     <div class="text-right" style="margin:10px">
         <hr />
         <div class="text-right" style="padding:5px 10px 0px 0px">
-            <a href="https://www.igprog.hr" class="text-primary small" title="IG PROG, obrt za računalno programiranje">Developed by {{config.copyright}}</a>
+            <a href="https://www.rivierasplit.com" class="text-primary small" title="Riviera Split">&copy 2019 {{config.appname}}</a>
+            <!--<a href="https://www.igprog.hr" class="text-primary small" title="IG PROG, obrt za računalno programiranje">Developed by {{config.copyright}}</a>-->
         </div>
     </div>
-
-
-
 
         <modal-directive img="'img/map.png'"></modal-directive>
 

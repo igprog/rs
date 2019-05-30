@@ -3,14 +3,14 @@
         <select ng-model="productGroupOption" ng-change="filter(productGroupOption)" class="form-control">
             <option disabled="disabled" ng-selected="true" value="">{{'filter by category' | translate}}...</option>
             <option value="">{{'all categories' | translate}}</option>
-            <option ng-repeat="x in productGroups" value="{{x.productGroupId}}">{{x.title}}</option>
+            <option ng-repeat="x in productGroups" value="{{x.productGroupId}}">{{x.title | translate}}</option>
         </select>
     </div>
     <div class="mt-10">
         <select class="form-control" ng-model="cityOption" ng-change="filter(cityOption)">
             <option disabled="disabled" ng-selected="true" value="">{{'filter by town' | translate}}...</option>
             <option value="">{{'all towns' | translate}}</option>
-            <option ng-repeat="x in cities" value="{{x.city}}">{{x.city}}</option>
+            <option ng-repeat="x in cities" value="{{x.city}}">{{x.city | translate}}</option>
         </select>
     </div>
     <div class="mt-10">
