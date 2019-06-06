@@ -50,6 +50,7 @@
 
     $scope.lang = 'en';
     $scope.setLanguage = function (x) {
+        $scope.lang = x;
         $translate.use(x);
         $translatePartialLoader.addPart('main');
     };

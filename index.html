@@ -50,7 +50,16 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="admin/signup.html"><i class="fa fa-sign-in"></i> {{ 'Sign Up' | translate }}</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            {{lang}}
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" ng-click="setLanguage('hr')">HR</a></li>
+                            <li><a href="#" ng-click="setLanguage('en')">EN</a></li>
+                        </ul>
+                    </li>
                     <li><a href="admin/"><i class="fa fa-sign-out"></i> {{ 'Login' | translate }}</a></li>
                 </ul>
             </div>
@@ -65,18 +74,10 @@
                         <img src="img/map.png" class="img-circle" style="width:150px; cursor:pointer;" data-toggle="modal" data-target="#myModal" />
                     </div>
                 </div>
-                <div class="col-xs-6 text-right">
-                    <input type="button" value="hr" class="btn btn-default" ng-click="setLanguage('hr')" />
-                    <input type="button" value="en" class="btn btn-default" ng-click="setLanguage('en')" />
-                </div>
             </div>
             <div class="header-content-inner">
                 <h1 id="homeHeading">Riviera Split</h1>
                 <h2 class="lead text-center pt3" style="font-weight:600; font-size:22px">{{'sitedesc' | translate}}</h2>
-                <!--<div>
-                    <input type="button" value="hr" class="btn btn-default" ng-click="setLanguage('hr')" />
-                    <input type="button" value="en" class="btn btn-default" ng-click="setLanguage('en')" />
-                </div>-->
                 <div class="row mt-10 text-uppercase" style="color:lightskyblue">
                     <div class="col-sm-4">
                         <a href="#products" ng-click="filter('b8b3ae5d-cd80-416f-99a9-b79916820e97')" title="{{'search accommodation' | translate}}">
